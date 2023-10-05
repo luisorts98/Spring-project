@@ -7,8 +7,8 @@ public interface StationService {
     public Station createAndUpdateStation(Station station);
 
     public Station modifyStation(Station station);
-    public Station getStation(int Number);
-    public void deleteStation(int Number);
+    public Station getStation(int id);
+    public void deleteStation(int id);
 
 
 }

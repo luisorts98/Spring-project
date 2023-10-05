@@ -1,42 +1,33 @@
 package es.javaschool.train.Entity;
 
 import jakarta.persistence.*;
-import org.w3c.dom.Text;
 
 @Entity
-@Table(name = "Trenes")
+@Table(name = "Station")
 public class Station {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Number")
-    private int Number;
-    @Column(name = "Stations")
-    private char Stations;
-    @Column(name = "Seats")
-    private int Seats;
+    @Column(name = "idStation")
+    private int idStation;
+    @Column(name = "name")
+    private char Name;
 
-    public int getNumber() {
-        return Number;
+    public int getIdStation() {
+        return idStation;
     }
 
-    public char getStations() {
-        return Stations;
+    public char getName() {
+        return Name;
     }
 
-    public int getSeats() {
-        return Seats;
+
+    public void setIdStation(int idStation) {
+        this.idStation = idStation;
+    }
+    public void setName(char Name) {
+        this.Name = Name;
     }
 
-    public void setNumber(int number) {
-        Number = number;
-    }
 
-    public void setStations(char stations) {
-        Stations = stations;
-    }
-
-    public void setSeats(int seats) {
-        Seats = seats;
-    }
 }

@@ -20,13 +20,13 @@ public class StationServiceIMPL implements StationService {
 
     @Override
     public Station createAndUpdateStation(Station station) {
-       station.setNumber(station.getNumber());
+       station.setIdStation(station.getIdStation());
         return this.stationRepo.save(station);
     }
 
     @Override
     public Station getStation(int Number) {
-        return this .stationRepo.findById(Number).get();
+        return this.stationRepo.findById(Number).get();
     }
 
     @Override
