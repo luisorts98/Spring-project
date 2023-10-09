@@ -8,24 +8,24 @@ import es.javaschool.train.Service.StationService;
 
 import java.util.List;
 @Service
-public class StationServiceIMPL implements StationService {
+public class StationServiceImpl implements StationService {
 
     @Autowired
     private StationRepo stationRepo;
 
     @Override
-    public List<Station> getStation() {
+    public List<Station> consultStations() {
         return (List<Station>) this.stationRepo.findAll();
     }
 
     @Override
     public Station createAndUpdateStation(Station station) {
-       station.setIdStation(station.getIdStation());
+        station.setIdStation(station.getIdStation());
         return this.stationRepo.save(station);
     }
 
     @Override
-    public Station getStation(int Number) {
+    public Station consultStation(int Number) {
         return this.stationRepo.findById(Number).get();
     }
 
@@ -34,7 +34,7 @@ public class StationServiceIMPL implements StationService {
         this.stationRepo.deleteById(Number);
     }
 
-@Override
+    @Override
     public Station modifyStation(Station station) {
         return this.stationRepo.save(station);
     }

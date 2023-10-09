@@ -11,22 +11,22 @@ public class Station {
     @Column(name = "idStation")
     private int idStation;
     @Column(name = "name")
-    private char Name;
+    private String nameStation;
 
     public int getIdStation() {
         return idStation;
     }
 
-    public char getName() {
-        return Name;
+    public String getNameStation() {
+        return nameStation;
     }
 
 
     public void setIdStation(int idStation) {
         this.idStation = idStation;
     }
-    public void setName(char Name) {
-        this.Name = Name;
+    public void setNameStation(String NameStation) {
+        this.nameStation = NameStation;
     }
 
 

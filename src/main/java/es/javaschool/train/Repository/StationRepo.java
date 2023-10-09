@@ -1,8 +1,9 @@
 package es.javaschool.train.Repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import es.javaschool.train.Entity.Station;
-public interface StationRepo extends CrudRepository<Station,Integer> {
+import org.springframework.data.repository.CrudRepository;
+public interface StationRepo extends JpaRepository<Station,Integer> {
 
 
 }
