@@ -6,19 +6,27 @@ import jakarta.persistence.*;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idTicket")
     private int idTicket;
 
 
     @OneToOne
-    @JoinColumn(name = "idPassenger")
-    private Passenger idPassenger;
+    @JoinColumn(name = "idPassenger",
+                 referencedColumnName = "idPassenger")
+    private Passenger idPassengers;
 
 
-    @ManyToOne
+  /*  @ManyToOne
     @JoinColumn(name = "idTrain")
     private Train idTrain;
+*/
+    public Ticket(){
 
+    }
+    public Ticket(int idTicket, Passenger idPassengers){
+        this.idTicket = idTicket;
+        this.idPassengers = idPassengers;
+    }
     public int getIdTicket() {
         return idTicket;
     }
@@ -27,19 +35,19 @@ public class Ticket {
         this.idTicket = idTicket;
     }
 
-    public Passenger getIdPassenger() {
-        return idPassenger;
+    public Passenger getIdPassengers() {
+        return idPassengers;
     }
 
-    public void setIdPassenger(Passenger idPassenger) {
-        this.idPassenger = idPassenger;
+    public void setIdPassenger(Passenger idPassengers) {
+        this.idPassengers = idPassengers;
     }
 
-    public Train getIdTrain() {
+    /*public Train getIdTrain() {
         return idTrain;
-    }
-
+    }*/
+/*
     public void setIdTrain(Train idTrain) {
         this.idTrain = idTrain;
-    }
+    }*/
 }

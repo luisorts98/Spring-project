@@ -4,53 +4,63 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Entity.Passenger;
-import es.javaschool.train.Service.IMPL.PassengerServiceImpl;
+import es.javaschool.train.Service.Impl.PassengerServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("Passenger")
+@RequestMapping("/")
 public class PassengerControl {
     @Autowired
     private PassengerServiceImpl passengerServiceIMPL;
 
 
-    @GetMapping
-    @RequestMapping(value = "consultPassenger", method = RequestMethod.GET)
-    public ResponseEntity<?> consultPassenger() {
+    @GetMapping("/passengers")
+    public String consultPassenger(Model model){
         List<Passenger> passengers = this.passengerServiceIMPL.consultPassengers();
-        return ResponseEntity.ok(passengers);
+        model.addAttribute("passengers",passengers);
+        return "passengers";
     }
 
-    @PostMapping
-    @RequestMapping(value = "createPassenger", method = RequestMethod.POST)
-    public ResponseEntity<?> createPassenger(@RequestBody Passenger passenger) {
-        Passenger passengerCreate = this.passengerServiceIMPL.createAndUpdatePassenger(passenger);
-        return ResponseEntity.status(HttpStatus.CREATED).body(passengerCreate);
+    @GetMapping("/passengers/createPassenger")
+    public String createAndUpdatePassengerForm(Model model){
+        model.addAttribute("passenger",  new Passenger());
+        return "createAndUpdatePassenger";
     }
 
-    @PutMapping
-    @RequestMapping(value = "modifyPassenger", method = RequestMethod.PUT)
-    public ResponseEntity<?> modifyPassenger(@RequestBody Passenger passenger) {
-        Passenger passengerModify = passengerServiceIMPL.modifyPassenger(passenger);
-        return ResponseEntity.status(HttpStatus.CREATED).body(passengerModify);
+   @PostMapping("/passengers")
+   public String createAndUpdatePassenger(Passenger passenger){
+        this.passengerServiceIMPL.createAndUpdatePassenger(passenger);
+        return "redirect:/passengers";
+   }
+
+    @GetMapping("/passengers/edit/{id}")
+    public String modifyPassengerForm(@PathVariable int id, Model model) {
+        Passenger passenger = this.passengerServiceIMPL.consultPassenger(id);
+        model.addAttribute("passenger", passenger);
+        return "editPassenger";
     }
 
-    @GetMapping
-    @RequestMapping(value = "FindPassanger/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> FindPassanger(@PathVariable int id) {
-        Passenger passengerSearch = passengerServiceIMPL.consultPassenger(id);
-        return ResponseEntity.ok(passengerSearch);
+    @PostMapping("/passengers/{id}")
+    public String modifyPassenger(@PathVariable int id, @ModelAttribute("passenger") Passenger passenger, Model model){
+        Passenger passengerModify = this.passengerServiceIMPL.consultPassenger(id);
+        passengerModify.setIdPassenger(id);
+        passengerModify.setName(passenger.getName());
+        passengerModify.setDateOfBirth(passenger.getDateOfBirth());
+        passengerModify.setSurname(passenger.getSurname());
+        this.passengerServiceIMPL.modifyPassenger(passengerModify);
+        return "redirect:/passengers";
     }
 
-    @DeleteMapping
-    @RequestMapping(value = "DeletePassenger/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> DeletePassenger(@PathVariable int id) {
-        passengerServiceIMPL.deletePassenger(id);
-        return ResponseEntity.ok().build();
+    @GetMapping("passengers/{id}")
+    public String deletePassenger(@PathVariable int id){
+        this.passengerServiceIMPL.deletePassenger(id);
+        return "redirect:/passengers";
     }
+
 
 }

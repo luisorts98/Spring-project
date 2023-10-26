@@ -1,4 +1,4 @@
-package es.javaschool.train.Service.IMPL;
+package es.javaschool.train.Service.Impl;
 
 import es.javaschool.train.Entity.Ticket;
 import es.javaschool.train.Repository.TicketRepo;
@@ -16,7 +16,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> consultTickets() {
-        return (List<Ticket>) this.ticketRepo.findAll();
+        return this.ticketRepo.findAll();
     }
 
     @Override

@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Train")
 public class Train {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idTrain")
     private int idTrain;
 
@@ -16,6 +16,13 @@ public class Train {
     @Column(name = "seats")
     private int seats;
 
+    public Train() {
+    }
+    public Train(int idTrain, int stations, int seats) {
+        this.idTrain = idTrain;
+        this.stations = stations;
+        this.seats = seats;
+    }
     public int getIdTrain() {
         return idTrain;
     }
@@ -39,4 +46,7 @@ public class Train {
     public void setSeats(int seats) {
         this.seats = seats;
     }
+
+
 }
+

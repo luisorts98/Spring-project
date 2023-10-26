@@ -1,4 +1,4 @@
-package es.javaschool.train.Service.IMPL;
+package es.javaschool.train.Service.Impl;
 
 import es.javaschool.train.Entity.Train;
 import es.javaschool.train.Repository.TrainRepo;
@@ -15,7 +15,7 @@ public class TrainServiceImpl implements TrainService{
 
     @Override
     public List<Train> consultTrains() {
-        return (List<Train>) this.trainRepo.findAll();
+        return this.trainRepo.findAll();
     }
 
     @Override
@@ -25,13 +25,13 @@ public class TrainServiceImpl implements TrainService{
     }
 
     @Override
-    public Train consultTrain(int Number) {
-        return this.trainRepo.findById(Number).get();
+    public Train consultTrain(int number) {
+        return this.trainRepo.findById(number).get();
     }
 
     @Override
-    public void deleteTrain(int Number) {
-        this.trainRepo.deleteById(Number);
+    public void deleteTrain(int number) {
+        this.trainRepo.deleteById(number);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package es.javaschool.train.Service.IMPL;
+package es.javaschool.train.Service.Impl;
 
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Repository.PassengerRepo;
@@ -24,6 +24,7 @@ public class PassengerServiceImpl implements PassengerService{
         passenger.setIdPassenger(passenger.getIdPassenger());
         return this.passengerRepo.save(passenger);
     }
+
 
     @Override
     public Passenger consultPassenger(int Number) {

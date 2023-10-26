@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Passenger</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <a class="navbar-brand" href="#">Register</a>
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/passengers}">Passenger edition</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class="text-center">Passenger edition</h1>
+            <div class="card-body">
+                <form th:action="@{/passengers/{idPassenger}(idPassenger=${passenger.idPassenger})}" th:objet="${passenger}" method="POST">
+                    <div class="form-group">
+                        <label>name Passenger: </label>
+                        <input type="text" name="name" th:field="*{passenger.name}" class="from-control" placeholder="name passenger" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>surname Passenger: </label>
+                        <input type="text" name="surname" th:field="*{passenger.surname}" class="from-control" placeholder="surname passenger" required>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label>Date Passenger: </label>
+                        <input type="text" name="dateOfBirth" th:field="*{passenger.dateOfBirth}" class="from-control" placeholder="date passenger" required>
+                    </div>
+                    <div class="box-footer">
+                        <br>
+                        <button class="btn btn-success" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package es.javaschool.train.Service.IMPL;
+package es.javaschool.train.Service.Impl;
 
 import es.javaschool.train.Service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package es.javaschool.train.Service.IMPL;
+package es.javaschool.train.Service.Impl;
 
 import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Repository.StationRepo;
@@ -15,7 +15,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public List<Station> consultStations() {
-        return (List<Station>) this.stationRepo.findAll();
+        return this.stationRepo.findAll();
     }
 
     @Override

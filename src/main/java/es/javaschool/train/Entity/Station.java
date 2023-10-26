@@ -7,12 +7,17 @@ import jakarta.persistence.*;
 public class Station {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idStation")
     private int idStation;
     @Column(name = "name")
     private String nameStation;
 
+    public Station() {
+    }
+    public Station(int idStation, String nameStation) {
+        this.idStation = idStation;
+        this.nameStation = nameStation;
+    }
     public int getIdStation() {
         return idStation;
     }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import es.javaschool.train.Service.IMPL.ScheduleServiceImpl;
+import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 
 import java.util.List;
 @Controller
