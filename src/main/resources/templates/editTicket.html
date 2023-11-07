@@ -23,10 +23,17 @@
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
             <h1 class="text-center">Ticket edition</h1>
             <div class="card-body">
-                <form th:action="@{/tickets/{idTicket}(idTicket=${ticket.idTicket})}" th:objet="${ticket}" method="POST">
+                <form th:action="@{/tickets/{idTicket}(idTicket=${ticket.idTicket})}" th:object="${ticket}" method="POST">
+                    <input type="hidden" th:field="*{idTicket}" />
                     <div class="form-group">
                         <label>idPassenger : </label>
-                        <input type="text" name="stations" th:field="*{ticket.idTicket}" class="from-control" placeholder="Digite el numero de estaciones " required>
+                        <label>idPassenger : </label>
+                        <select name="idPassenger" id="id_passenger" class="form-control" required>
+                            <option value="">Select</option>
+                            <option th:each="passenger : ${allPassengers}" th:value="${passenger.idPassenger}" th:text="${passenger.name}">
+
+                            </option>
+                        </select>
                     </div>
                     <div class="box-footer">
                         <br>

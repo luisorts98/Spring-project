@@ -38,15 +38,15 @@ public class PassengerControl {
         return "redirect:/passengers";
    }
 
-    @GetMapping("/passengers/edit/{id}")
-    public String modifyPassengerForm(@PathVariable int id, Model model) {
+    @GetMapping("/passengers/edit/{id_passenger}")
+    public String modifyPassengerForm(@PathVariable("id_passenger") int id, Model model) {
         Passenger passenger = this.passengerServiceIMPL.consultPassenger(id);
         model.addAttribute("passenger", passenger);
         return "editPassenger";
     }
 
-    @PostMapping("/passengers/{id}")
-    public String modifyPassenger(@PathVariable int id, @ModelAttribute("passenger") Passenger passenger, Model model){
+    @PostMapping("/passengers/{id_passenger}")
+    public String modifyPassenger(@PathVariable("id_passenger") int id, @ModelAttribute("passenger") Passenger passenger, Model model){
         Passenger passengerModify = this.passengerServiceIMPL.consultPassenger(id);
         passengerModify.setIdPassenger(id);
         passengerModify.setName(passenger.getName());

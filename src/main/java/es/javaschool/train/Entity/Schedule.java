@@ -2,6 +2,7 @@ package es.javaschool.train.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "Schedule")
@@ -9,19 +10,22 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idSchedule")
+    @Column(name = "id_schedule")
     private int idSchedule;
 
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "time")
     private Date time;
 
-    @ManyToOne
-    @JoinColumn(name = "idTrain", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_train", nullable = false)
     private Train idTrain;
 
-    @ManyToOne
-    @JoinColumn(name = "idStation")
-    private Station idStat;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_station")
+    private Station idStation;
 
 
 
@@ -35,7 +39,7 @@ public class Schedule {
     }
 
     public Station getIdStation() {
-        return idStat;
+        return idStation;
     }
 
     public Date getTime() {
@@ -51,7 +55,7 @@ public class Schedule {
     }
 
     public void setIdStation(Station idStat) {
-        this.idStat = idStat;
+        this.idStation = idStat;
     }
 
     public void setTime(Date time) {

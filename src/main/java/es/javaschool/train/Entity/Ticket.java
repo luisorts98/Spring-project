@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 public class Ticket {
 
     @Id
-    @Column(name = "idTicket")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_ticket")
     private int idTicket;
 
 
-    @OneToOne
-    @JoinColumn(name = "idPassenger",
-                 referencedColumnName = "idPassenger")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_passenger", nullable = false)
     private Passenger idPassengers;
 
 
@@ -39,7 +39,7 @@ public class Ticket {
         return idPassengers;
     }
 
-    public void setIdPassenger(Passenger idPassengers) {
+    public void setIdPassengers(Passenger idPassengers) {
         this.idPassengers = idPassengers;
     }
 

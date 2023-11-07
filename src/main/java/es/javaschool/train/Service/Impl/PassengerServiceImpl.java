@@ -16,7 +16,7 @@ public class PassengerServiceImpl implements PassengerService{
 
     @Override
     public List<Passenger> consultPassengers() {
-        return (List<Passenger>) this.passengerRepo.findAll();
+        return this.passengerRepo.findAll();
     }
 
     @Override

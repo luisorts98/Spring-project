@@ -4,18 +4,29 @@
     <meta charset="UTF-8">
     <title>Railway Station</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        /* Estilo para el sidebar en la parte inferior */
+        .sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100px; /* Ajusta la altura según tus preferencias */
+        }
+
+        /* Estilo adicional para reducir el ancho del sidebar */
+        .sidebar-small {
+            width: 150px; /* Ajusta el ancho según tus preferencias */
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-                <h1 class="text-center">Railway Station</h1>
-            </div>
-        <div class="row">
-            <div class="col-lg-3">
+            <main class="col-lg-12 col-md-12 col-sm-12">
+                <div class="container text-center"> <!-- Centra el contenido principal vertical y horizontalmente -->
+                    <h1>Railway Station</h1>
                 <a th:href="@{/passengers/createPassenger}" class="btn btn-primary btn-sm mb3">new passenger</a>
-               </div>
-        </div>
-        <br>
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
             <tr>
@@ -32,12 +43,35 @@
                 <td th:text="${passenger.surname}"></td>
                 <td th:text="${passenger.dateOfBirth}"></td>
                 <td>
-                    <a th:href="@{/passengers/edit/{idPassenger}(idPassenger=${passenger.idPassenger})}" class="btn btn-info">Edit</a>
+                    <a th:href="@{/passengers/edit/{id_passenger}(id_passenger=${passenger.idPassenger})}" class="btn btn-info">Edit</a>
                     <a th:href="@{/passengers/{idPassenger}(idPassenger=${passenger.idPassenger})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>
         </table>
+    </div>
+            </main>
+        </div>
+        <nav class="col-lg-12 col-md-12 col-sm-12 sidebar-bottom">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/tickets}">Tickets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/trains}">Trains</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/stations}">Stations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/passengers}">Passengers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/schedules}">Schedules</a>
+                </li>
+                <!-- Agrega más elementos de menú para otras entidades según sea necesario -->
+            </ul>
+        </nav>
     </div>
 </body>
 </html>

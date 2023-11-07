@@ -5,6 +5,7 @@
     <title>Railway Station</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
+        /* Estilo para el sidebar en la parte inferior */
         .sidebar-bottom {
             display: flex;
             flex-direction: column;
@@ -25,32 +26,32 @@
             <main class="col-lg-12 col-md-12 col-sm-12">
                 <div class="container text-center"> <!-- Centra el contenido principal vertical y horizontalmente -->
                 <h1 class="text-center">Railway Station</h1>
-                <a th:href="@{/trains/createTrain}" class="btn btn-primary btn-sm mb3">new train</a>
-        <br>
+                <a th:href="@{/schedules/createSchedule}" class="btn btn-primary btn-sm mb3">new ticket</a>
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
             <tr>
-                <th scope="col">idTrain</th>
-                <th scope="col">stations</th>
-                <th scope="col">seats</th>
-                <th scope="col">Actions</th>
+                <th scope="col">id Schedule</th>
+                <th scope="col">time</th>
+                <th scope="col">Name station</th>
+                <th scope="col">id train</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="train : ${trains}">
-                <td th:text="${train.idTrain}"></td>
-                <td th:text="${train.stations}"></td>
-                <td th:text="${train.seats}"></td>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.idSchedule}"></td>
+                <td th:text="${#dates.format(schedule.time, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${schedule.idStation == null ? '' : schedule.idStation.nameStation}"></td>
+                <td th:text="${schedule.idTrain == null ? '' : schedule.idTrain.idTrain}"></td>
                 <td>
-                    <a th:href="@{/trains/edit/{idTrain}(idTrain=${train.idTrain})}" class="btn btn-info">Edit</a>
-                    <a th:href="@{/trains/{idTrain}(idTrain=${train.idTrain})}" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/schedules/edit/{idSchedule}(idSchedule=${schedule.idSchedule})}" class="btn btn-info">Edit</a>
+                    <a th:href="@{/schedules/{idSchedule}(idSchedule=${schedule.idSchedule})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 </main>
-</div>
+        </div>
         <nav class="col-lg-12 col-md-12 col-sm-12 sidebar-bottom">
             <ul class="nav">
                 <li class="nav-item">

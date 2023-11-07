@@ -1,6 +1,6 @@
 package es.javaschool.train.Entity;
 import jakarta.persistence.*;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +9,8 @@ import java.util.List;
 public class Passenger {
 
     @Id
-    @Column(name = "idPassenger")
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_passenger", nullable = false)
     private int idPassenger;
 
     @Column(name = "name")
@@ -17,11 +18,12 @@ public class Passenger {
 
     @Column(name = "surname")
     private String surname;
-
-    @Column(name = "dateOfBirth")
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
-    @OneToOne(mappedBy = "idPassengers", cascade = CascadeType.ALL)
-    private Ticket ticket;
+    @OneToMany(mappedBy = "idPassengers", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Ticket> tickets;
 
     public Passenger(){
 
@@ -60,6 +62,13 @@ public class Passenger {
         this.surname = surname;
     }
 
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;

@@ -5,9 +5,6 @@ import es.javaschool.train.Entity.Ticket;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import es.javaschool.train.Service.Impl.TicketServiceImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import java.util.List;
@@ -34,12 +31,16 @@ public class TicketControl {
 
     @GetMapping("/tickets/createTicket")
     public String createAndUpdateTicketForm(Model model){
-        model.addAttribute("ticket",  new Ticket());
-        model.addAttribute("allPassengers", passengerServiceIMPL.consultPassengers());
+        List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
+        Ticket ticket = new Ticket();
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("allPassengers", passengers);
         return "createAndUpdateTicket";
     }
     @PostMapping("/tickets")
-    public String createAndUpdateTicket(Ticket ticket){
+    public String createAndUpdateTicket(@RequestParam(value="id_passenger") int idPassenger, @ModelAttribute("ticket") Ticket ticket){
+        Passenger passenger = passengerServiceIMPL.consultPassenger(idPassenger);
+        ticket.setIdPassengers(passenger);
         this.ticketServiceIMPL.createAndUpdateTicket(ticket);
         return "redirect:/tickets";
     }
@@ -48,13 +49,15 @@ public class TicketControl {
     public String modifyTicketForm(@PathVariable int id, Model model) {
         Ticket ticket = this.ticketServiceIMPL.consultTicket(id);
         model.addAttribute("ticket", ticket);
+        List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
+        model.addAttribute("allPassengers", passengers);
         return "editTicket";
     }
     @PostMapping("/tickets/{id}")
-    public String modifyTicket(@PathVariable int id, @ModelAttribute("ticket") Ticket ticket, Model model){
+    public String modifyTicket(@PathVariable int id, @ModelAttribute("ticket") Ticket ticket, @RequestParam("idPassenger") int idPassenger){
         Ticket ticketModify = this.ticketServiceIMPL.consultTicket(id);
         ticketModify.setIdTicket(id);
-        ticketModify.setIdPassenger(ticket.getIdPassengers());
+        ticketModify.setIdPassengers(passengerServiceIMPL.consultPassenger(idPassenger));
         this.ticketServiceIMPL.modifyTicket(ticketModify);
         return "redirect:/tickets";
     }

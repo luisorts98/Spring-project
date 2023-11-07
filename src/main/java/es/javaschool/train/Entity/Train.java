@@ -1,5 +1,6 @@
 package es.javaschool.train.Entity;
 import jakarta.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -7,7 +8,8 @@ import jakarta.persistence.*;
 public class Train {
 
     @Id
-    @Column(name = "idTrain")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_train")
     private int idTrain;
 
     @Column(name = "stations")
@@ -16,6 +18,8 @@ public class Train {
     @Column(name = "seats")
     private int seats;
 
+    @OneToMany(mappedBy = "idTrain", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Schedule> schedules;
     public Train() {
     }
     public Train(int idTrain, int stations, int seats) {

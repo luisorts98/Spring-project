@@ -23,20 +23,20 @@
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
             <h1 class="text-center">Passenger edition</h1>
             <div class="card-body">
-                <form th:action="@{/passengers/{idPassenger}(idPassenger=${passenger.idPassenger})}" th:objet="${passenger}" method="POST">
+                <form th:action="@{/passengers/{id_passenger}(id_passenger=${passenger.idPassenger})}" th:object="${passenger}" method="POST">
                     <div class="form-group">
                         <label>name Passenger: </label>
-                        <input type="text" name="name" th:field="*{passenger.name}" class="from-control" placeholder="name passenger" required>
+                        <input type="text" name="name" th:field="*{name}" class="from-control" placeholder="name passenger" required>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>surname Passenger: </label>
-                        <input type="text" name="surname" th:field="*{passenger.surname}" class="from-control" placeholder="surname passenger" required>
+                        <input type="text" name="surname" th:field="*{surname}" class="from-control" placeholder="surname passenger" required>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Date Passenger: </label>
-                        <input type="text" name="dateOfBirth" th:field="*{passenger.dateOfBirth}" class="from-control" placeholder="date passenger" required>
+                        <input type="date" name="date_of_birth" th:field="*{dateOfBirth}" class="from-control" placeholder="date passenger" required>
                     </div>
                     <div class="box-footer">
                         <br>

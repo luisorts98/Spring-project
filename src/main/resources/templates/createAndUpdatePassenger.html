@@ -25,23 +25,19 @@
             <div class="card-body">
                 <form th:action="@{/passengers}" th:object="${passenger}" method="POST">
                     <div class="form-group">
-                        <label>idPassenger : </label>
-                        <input type="text" name="idPassenger" th:field="*{idPassenger}" class="from-control" placeholder="Digite el id " required>
-                    </div>
-                    <br>
-                    <div class="form-group">
                         <label>name : </label>
                         <input type="text" name="name" th:field="*{name}" class="from-control" placeholder="Name of the passenger " required>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>Surname : </label>
-                        <input type="text" name="name" th:field="*{surname}" class="from-control" placeholder="Surname of the passenger " required>
+                        <input type="text" name="surname" th:field="*{surname}" class="from-control" placeholder="Surname of the passenger " required>
                     </div>
                     <br>
                     <div class="form-group">
                         <label>date of birth : </label>
-                        <input type="text" name="dateOfBirth" th:field="*{dateOfBirth}" class="from-control" placeholder="Date of the passenger " required>
+                        <input type="date" name="date_of_birth" th:field="*{dateOfBirth}" placeholder="yyyy-MM-dd" class="from-control" required>
+
                     </div>
                     <div class="box-footer">
                         <br>

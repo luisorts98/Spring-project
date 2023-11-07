@@ -2,16 +2,21 @@ package es.javaschool.train.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Station")
 public class Station {
 
     @Id
-    @Column(name = "idStation")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_station")
     private int idStation;
     @Column(name = "name")
     private String nameStation;
 
+    @OneToMany(mappedBy = "idStation", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Schedule> schedules;
     public Station() {
     }
     public Station(int idStation, String nameStation) {

@@ -25,11 +25,6 @@
             <div class="card-body">
                 <form th:action="@{/trains}" th:object="${train}" method="POST">
                     <div class="form-group">
-                        <label>idTrain : </label>
-                        <input type="text" name="idTrain" th:field="*{idTrain}" class="from-control" placeholder="Digite el id " required>
-                    </div>
-                    <br>
-                    <div class="form-group">
                         <label>stations : </label>
                         <input type="text" name="stations" th:field="*{stations}" class="from-control" placeholder="Digite el numero de estaciones " required>
                     </div>
