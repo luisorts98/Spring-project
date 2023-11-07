@@ -16,10 +16,10 @@ public class Ticket {
     private Passenger idPassengers;
 
 
-  /*  @ManyToOne
-    @JoinColumn(name = "idTrain")
-    private Train idTrain;
-*/
+    /*@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_train", nullable = false)
+    private Train idTrain;*/
+
     public Ticket(){
 
     }
@@ -43,11 +43,5 @@ public class Ticket {
         this.idPassengers = idPassengers;
     }
 
-    /*public Train getIdTrain() {
-        return idTrain;
-    }*/
-/*
-    public void setIdTrain(Train idTrain) {
-        this.idTrain = idTrain;
-    }*/
+
 }

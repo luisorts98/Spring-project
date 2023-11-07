@@ -20,6 +20,7 @@ public class Train {
 
     @OneToMany(mappedBy = "idTrain", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Schedule> schedules;
+
     public Train() {
     }
     public Train(int idTrain, int stations, int seats) {
