@@ -27,7 +27,9 @@
                 <div class="container text-center"> <!-- Centra el contenido principal vertical y horizontalmente -->
                 <h1 class="text-center">Railway Station</h1>
                 <a th:href="@{/stations/createStation}" class="btn btn-primary btn-sm mb-3">new station</a>
-        <br>
+                    <a class="btn btn-danger position-absolute top-0 end-0 m-3" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+
+                    <br>
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
             <tr>
@@ -66,9 +68,10 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/schedules}">Schedules</a>
                 </li>
-                <!-- Agrega más elementos de menú para otras entidades según sea necesario -->
             </ul>
         </nav>
     </div>
+    <form id="logout-form" th:action="@{/logout}" method="post" style="display: none;">
+    </form>
 </body>
 </html>

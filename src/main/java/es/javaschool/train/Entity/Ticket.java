@@ -1,5 +1,5 @@
 package es.javaschool.train.Entity;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Ticket")
