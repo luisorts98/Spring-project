@@ -8,36 +8,62 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
+    <style>
+        body {
+            padding-top: 70px; /* Ajusta el espacio para la barra de navegación */
+        }
+    </style>
 </head>
 <body>
-nav class="navbar navbar-inverse navbar-fixed-top">
-<div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed"
-                data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span> <span
-                class="icon-bar"></span> <span class="icon-bar"></span> <span
-                class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#" th:href="@{/}">Star session</a>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">HOME</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li th:if="${userRoles.contains('ADMIN')}"><a th:href="@{/trains}">Trains</a></li>
+                <li th:if="${userRoles.contains('ADMIN')}"><a th:href="@{/stations}">Stations</a></li>
+                <li th:if="${userRoles.contains('ADMIN')}"><a th:href="@{/passengers}">passengers</a></li>
+                <li th:if="${userRoles.contains('ADMIN')}"><a th:href="@{/tickets}">Tickets</a></li>
+                <li th:if="${userRoles.contains('ADMIN')}"><a th:href="@{/schedules}">Schedules</a></li>
+                <li th:if="${userRoles.contains('USER')}"><a th:href="@{/schedules}">Schedules</a></li>
+                <!-- Agrega más enlaces aquí según tus necesidades -->
+            </ul>
+            <form class="navbar-form navbar-right" th:action="@{/logout}" method="post">
+                <input type="submit" class="btn btn-success" value="Logout" />
+            </form>
+        </div>
     </div>
-    <div id="navbar" class="navbar-collapse collapse">
-        <form class="navbar-form navbar-right" th:action="@{/logout}" method="post">
-            <input type="submit" class="btn btn-success" value="Logout" />
-        </form>
-    </div>
-</div>
 </nav>
 
-<br>
-<br>
 <div class="container">
-    <h1>Register and start of session</h1>
-    Welcome
-    <span th:if="${#authentication.isAuthenticated()}" th:text="${#authentication.name}">User</span>
+    <h1>Welcome</h1>
+    <div th:if="${#authentication.isAuthenticated()}">
+        <p>Usuario: <span th:text="${#authentication.name}"></span></p>
+        <div th:if="${userRoles.contains('ADMIN')}">
+            <p th:text="'Welcome, admin ' + ${#authentication.getName()} + '!'"></p>
+            <!-- Puedes agregar más contenido específico para administradores aquí -->
+        </div>
+
+        <div th:if="${userRoles.contains('USER')}">
+            <p th:text="'Welcome, user ' + ${#authentication.getName()} + '!'"></p>
+            <!-- Puedes agregar más contenido específico para usuarios aquí -->
+        </div>
+    </div>
+    <div th:unless="${#authentication.isAuthenticated()}">
+        <p>No has iniciado sesión.</p>
+        <!-- Puedes agregar contenido adicional para usuarios no autenticados aquí -->
+    </div>
 </div>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>

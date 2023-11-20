@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -39,9 +40,15 @@ public class AdminServiceImpl implements AdminService {
             throw new UsernameNotFoundException("User not found with email: ");
         }
 
-        return new User(admin.getEmail(), admin.getPassword(), mappedAuthorities(admin.getRoles()));
+        return new User(admin.getEmail(), admin.getPassword(), mappedAuthorities(admin.getRoles())) {
+            @Override
+            public String getUsername() {
+                return admin.getName();
+            }
+        };//si queremos que se vea el email como usuario quitar linea48,47,46,45,44 y poner solo el ; al final de la linea 43
     }
     private Collection<? extends GrantedAuthority> mappedAuthorities(Collection<Rol> roles) {
+        System.out.println("ROLES: " + roles);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
     @Override

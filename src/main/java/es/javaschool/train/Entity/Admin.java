@@ -96,4 +96,9 @@ public class Admin {
     public void setRoles(Collection<Rol> roles) {
         this.roles = roles;
     }
+
+    public boolean isAdmin() {
+        // Verifica si el admin tiene el rol "ADMIN"
+        return roles.stream().anyMatch(rol -> rol.getName().equals("ADMIN"));
+    }
 }

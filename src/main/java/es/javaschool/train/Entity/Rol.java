@@ -17,8 +17,8 @@ public class Rol {
         this.name = name;
     }
 
-    /*@ManyToMany(mappedBy = "roles")
-    private Collection<Admin> admins;*/
+    @ManyToMany(mappedBy = "roles")
+    private Collection<Admin> admins;
 
     public Rol(){
 
