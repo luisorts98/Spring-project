@@ -59,7 +59,6 @@ public class RegisterControl {
         return "index";
     }
 
-
     @RequestMapping(value = "/trains")
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
