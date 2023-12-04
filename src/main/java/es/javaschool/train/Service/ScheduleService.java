@@ -12,5 +12,4 @@ public interface ScheduleService{
     public Schedule consultSchedule(int id);
     public void deleteSchedule(int id);
 
-
 }

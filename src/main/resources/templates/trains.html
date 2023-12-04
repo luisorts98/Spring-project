@@ -30,7 +30,6 @@
                 <li class="nav-item"><a class="nav-link" th:href="@{/stations}">Stations</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/passengers}">Passengers</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/schedules}">Schedules</a></li>
-                <!-- Agrega más enlaces aquí según tus necesidades -->
             </ul>
             <form class="navbar-form ml-auto" th:action="@{/logout}" method="post">
                 <button class="btn btn-logout" type="submit">Logout</button>
@@ -54,6 +53,8 @@
                         <th scope="col">idTrain</th>
                         <th scope="col">stations</th>
                         <th scope="col">seats</th>
+                        <th scope="col">stationDestination</th>
+                        <th scope="col">stationOrigin</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
@@ -62,6 +63,9 @@
                         <td th:text="${train.idTrain}"></td>
                         <td th:text="${train.stations}"></td>
                         <td th:text="${train.seats}"></td>
+                        <td th:text="${train.getNameStation()}"></td>
+                        <td th:text="${train.getNameStationOrigin()}"></td>
+
                         <td>
                             <a th:href="@{/trains/edit/{idTrain}(idTrain=${train.idTrain})}" class="btn btn-info">Edit</a>
                             <a th:href="@{/trains/{idTrain}(idTrain=${train.idTrain})}" class="btn btn-danger">Delete</a>

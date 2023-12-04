@@ -26,6 +26,8 @@
                 <li class="nav-item" th:if="${userRoles.contains('ADMIN')}"><a class="nav-link" th:href="@{/tickets}">Tickets</a></li>
                 <li class="nav-item" th:if="${userRoles.contains('ADMIN')}"><a class="nav-link" th:href="@{/schedules}">Schedules</a></li>
                 <li class="nav-item" th:if="${userRoles.contains('USER')}"><a class="nav-link" th:href="@{/schedules}">Schedules</a></li>
+                <li class="nav-item" th:if="${userRoles.contains('USER')}"><a class="nav-link" th:href="@{/trainSearch}">Train Search</a></li>
+
                 <!-- Agrega más enlaces aquí según tus necesidades -->
             </ul>
             <form class="ms-auto me-3" th:action="@{/logout}" method="post">

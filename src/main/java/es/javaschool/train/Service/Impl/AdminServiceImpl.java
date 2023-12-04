@@ -57,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
                 passwordEncoder.encode(adminRegi.getPassword()),
                 adminRegi.getName(),
                 adminRegi.getSurname(),
-                Arrays.asList(new Rol("USER")));
+                Arrays.asList(new Rol("ADMIN")));
 
         return adminRepo.save(admin);
     }

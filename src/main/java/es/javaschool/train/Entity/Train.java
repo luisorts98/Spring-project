@@ -4,7 +4,10 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "Train")
+@Table(name = "Train", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "station_destination"),
+        @UniqueConstraint(columnNames = "station_origin")})
+
 public class Train {
 
     @Id
@@ -20,6 +23,14 @@ public class Train {
 
     @OneToMany(mappedBy = "idTrain", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Schedule> schedules;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "station_destination") //Revisar stationdestination
+    private Station stationDestination;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "station_origin") //Revisar stationdestination
+    private Station stationOrigin;
 
     public Train() {
     }
@@ -50,6 +61,27 @@ public class Train {
 
     public void setSeats(int seats) {
         this.seats = seats;
+    }
+
+    public int getIdStation() {
+        return stationDestination.getIdStation();
+    }
+
+    public String getNameStation() {
+        return (stationDestination != null) ?  stationDestination.getNameStation() : null;
+    }
+    public Station getStationDestination() {
+        return stationDestination;
+    }
+    public Station getStationOrigin() {
+        return stationOrigin;
+    }
+    // Update this method to handle null stationOrigin
+    public String getNameStationOrigin() {
+        return (stationOrigin != null) ? stationOrigin.getNameStation() : null;
+    }
+    public void setIdStation(Station idStat) {
+        this.stationDestination = idStat;
     }
 
 

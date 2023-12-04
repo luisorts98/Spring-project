@@ -80,6 +80,23 @@ public class ScheduleControl {
         }
         return "redirect:/schedules";
     }
+    @GetMapping("/schedules/search")
+    public String searchSchedules(@RequestParam(name = "stationName", required = false) String stationName,
+                                  @RequestParam(name = "destinationStation", required = false) String destinationStation,
+                                  @RequestParam(name = "startTime", required = false) String startTime, Model model) {
+        List<Schedule> schedules;
+        if(stationName != null && destinationStation != null && startTime != null){
+            schedules = scheduleServiceIMPL.findSchedulesByStationName(stationName);
+}else if(stationName != null && destinationStation != null){
+            schedules = scheduleServiceIMPL.findSchedulesByStationName(destinationStation);
+        }else{
+            schedules = scheduleServiceIMPL.findSchedulesByStationName(stationName);
+        }
+
+        model.addAttribute("schedules", schedules);
+        return "schedules"; // Puedes redirigir a una vista diferente si lo prefieres
+    }
+
 
     @GetMapping("schedules/{id}")
     public String deleteSchedule(@PathVariable int id){
