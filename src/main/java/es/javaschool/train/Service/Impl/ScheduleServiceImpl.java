@@ -12,8 +12,10 @@ import java.util.Collections;
 import java.util.Date;
 import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Repository.StationRepo;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
+import java.util.Calendar;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -23,6 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private StationRepo stationRepo;
 
+    private static final Logger log = LoggerFactory.getLogger(ScheduleServiceImpl.class);
     @Override
     public List<Schedule> consultSchedules() {
         return (List<Schedule>) this.scheduleRepo.findAll();
@@ -34,33 +37,65 @@ public class ScheduleServiceImpl implements ScheduleService {
         return this.scheduleRepo.save(schedule);
     }
 
-    public List<Schedule> findSchedulesByStationName(String stationName) {
-        return scheduleRepo.findByStationName(stationName);
-    }
-  /*  public List<Schedule> findSchedulesByTime(String startTime) {
-        // Realiza la conversión de String a Date, asumiendo un formato específico
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date parsedDate = dateFormat.parse(startTime);
-            return scheduleRepo.findByTime(parsedDate);
-        } catch (ParseException e) {
-            // Manejo de la excepción de análisis de fecha
-            e.printStackTrace();
-            return Collections.emptyList(); // O manejo de error apropiado
+    public List<Schedule> findSchedulesByStationNameAndDestinationAndDate(String originStationName, String destinationStationName, String dateString) {
+        log.info("Searching schedules with origin: {}, destination: {} and date: {}", originStationName, destinationStationName, dateString);
+
+        if (originStationName != null && destinationStationName != null && dateString != null) {
+            // Convierte el String de fecha a Date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date date = dateFormat.parse(dateString);
+                List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestinationAndDate(originStationName, destinationStationName, date);
+                log.info("Found {} schedules", schedules.size());
+                return schedules;
+            } catch (ParseException e) {
+                log.warn("Invalid date format");
+                return Collections.emptyList();
+            }
+        } else {
+            log.warn("Invalid parameters for schedule search");
+            return Collections.emptyList();
         }
-    }*/
+    }
+
 
     public List<Schedule> findSchedulesByStationNameAndDestination(String originStationName, String destinationStationName) {
-       /* Station originStation = stationRepo.findByName(originStationName);
-        Station destinationStation = stationRepo.findByName(destinationStationName);
+        log.info("Searching schedules with origin: {} and destination: {}", originStationName, destinationStationName);
 
-        if (originStation != null && destinationStation != null) {
-            return scheduleRepo.findByStationNameAndStationDestination(originStation, destinationStation);
+        if (originStationName != null && destinationStationName != null) {
+            List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestination(originStationName, destinationStationName);
+            log.info("Found {} schedules", schedules.size());
+            return schedules;
         } else {
-            // Manejo de error si las estaciones no se encuentran
+            log.warn("Invalid parameters for schedule search");
             return Collections.emptyList();
-        }*/
-        return scheduleRepo.findByStationNameAndStationDestination(originStationName, destinationStationName);}
+        }
+    }
+
+    public List<Schedule> findSchedulesByDate(String dateString) {
+        log.info("Searching schedules for date: {}", dateString);
+
+        if (dateString != null) {
+            // Convierte el String de fecha a Date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date date = dateFormat.parse(dateString);
+                List<Schedule> schedules = scheduleRepo.findByDate(date);
+                log.info("Found {} schedules", schedules.size());
+                return schedules;
+            } catch (ParseException e) {
+                log.warn("Invalid date format");
+                return Collections.emptyList();
+            }
+        } else {
+            log.warn("Invalid parameters for schedule search");
+            return Collections.emptyList();
+        }
+    }
+
+
+    // Otros métodos del servicio
+
 
 
     @Override

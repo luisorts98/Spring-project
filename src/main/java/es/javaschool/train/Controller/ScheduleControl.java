@@ -81,21 +81,36 @@ public class ScheduleControl {
         return "redirect:/schedules";
     }
     @GetMapping("/schedules/search")
-    public String searchSchedules(@RequestParam(name = "stationName", required = false) String stationName,
-                                  @RequestParam(name = "destinationStation", required = false) String destinationStation,
-                                  @RequestParam(name = "startTime", required = false) String startTime, Model model) {
+    public String searchSchedules(
+            @RequestParam(name = "originName", required = false) String originName,
+            @RequestParam(name = "destinationName", required = false) String destinationName,
+            @RequestParam(name = "date", required = false) String dateString,
+            Model model
+    ) {
         List<Schedule> schedules;
-        if(stationName != null && destinationStation != null && startTime != null){
-            schedules = scheduleServiceIMPL.findSchedulesByStationName(stationName);
-}else if(stationName != null && destinationStation != null){
-            schedules = scheduleServiceIMPL.findSchedulesByStationName(destinationStation);
-        }else{
-            schedules = scheduleServiceIMPL.findSchedulesByStationName(stationName);
+
+        if (originName != null && destinationName != null && dateString != null) {
+            // Lógica para buscar por estación de origen, estación de destino y fecha
+            schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestinationAndDate(originName, destinationName, dateString);
+        } else if (originName != null && destinationName != null) {
+            // Lógica para buscar por estación de origen y estación de destino
+            schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestination(originName, destinationName);
+        } else if (dateString != null) {
+            // Lógica para buscar por fecha
+            schedules = scheduleServiceIMPL.findSchedulesByDate(dateString);
+        } else {
+            // Lógica para otros casos o mostrar todos los horarios si no se proporciona ningún parámetro de búsqueda
+            schedules = scheduleServiceIMPL.consultSchedules();
         }
 
         model.addAttribute("schedules", schedules);
-        return "schedules"; // Puedes redirigir a una vista diferente si lo prefieres
+        List<Train> allTrains = trainServiceIMPL.consultTrains();
+        List<Station> allStations = stationServiceIMPL.consultStations();
+        model.addAttribute("allTrains", allTrains);
+        model.addAttribute("allStations", allStations);
+        return "schedules";
     }
+
 
 
     @GetMapping("schedules/{id}")

@@ -80,6 +80,12 @@ public class Train {
     public String getNameStationOrigin() {
         return (stationOrigin != null) ? stationOrigin.getNameStation() : null;
     }
+    public String getNameStationDestination() {
+        return (stationDestination != null) ? stationDestination.getNameStation() : null;
+    }
+    public void setStationDestination(Station stationDestination) {
+        this.stationDestination = stationDestination;
+    }
     public void setIdStation(Station idStat) {
         this.stationDestination = idStat;
     }
