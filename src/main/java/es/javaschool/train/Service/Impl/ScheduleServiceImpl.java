@@ -40,23 +40,31 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<Schedule> findSchedulesByStationNameAndDestinationAndDate(String originStationName, String destinationStationName, String dateString) {
         log.info("Searching schedules with origin: {}, destination: {} and date: {}", originStationName, destinationStationName, dateString);
 
-        if (originStationName != null && destinationStationName != null && dateString != null) {
-            // Convierte el String de fecha a Date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date date = dateFormat.parse(dateString);
-                List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestinationAndDate(originStationName, destinationStationName, date);
+        if (originStationName != null && destinationStationName != null) {
+            if (dateString != null && !dateString.isEmpty()) {
+                // Si se proporciona una fecha, conviértela a Date
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = dateFormat.parse(dateString);
+                    List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestinationAndDate(originStationName, destinationStationName, date);
+                    log.info("Found {} schedules", schedules.size());
+                    return schedules;
+                } catch (ParseException e) {
+                    log.warn("Invalid date format");
+                    return Collections.emptyList();
+                }
+            } else {
+                // Si no se proporciona una fecha, busca sin considerar la fecha
+                List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestination(originStationName, destinationStationName);
                 log.info("Found {} schedules", schedules.size());
                 return schedules;
-            } catch (ParseException e) {
-                log.warn("Invalid date format");
-                return Collections.emptyList();
             }
         } else {
             log.warn("Invalid parameters for schedule search");
             return Collections.emptyList();
         }
     }
+
 
 
     public List<Schedule> findSchedulesByStationNameAndDestination(String originStationName, String destinationStationName) {
@@ -92,6 +100,32 @@ public class ScheduleServiceImpl implements ScheduleService {
             return Collections.emptyList();
         }
     }
+    public List<Schedule> findSchedulesByOriginStation(String originStationName) {
+        log.info("Searching schedules with origin: {}", originStationName);
+
+        if (originStationName != null) {
+            List<Schedule> schedules = scheduleRepo.findByStationOrigin(originStationName);
+            log.info("Found {} schedules", schedules.size());
+            return schedules;
+        } else {
+            log.warn("Invalid parameters for schedule search");
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Schedule> findSchedulesByDestinationStation(String destinationStationName) {
+        log.info("Searching schedules with destination: {}", destinationStationName);
+
+        if (destinationStationName != null) {
+            List<Schedule> schedules = scheduleRepo.findByStationDestination(destinationStationName);
+            log.info("Found {} schedules", schedules.size());
+            return schedules;
+        } else {
+            log.warn("Invalid parameters for schedule search");
+            return Collections.emptyList();
+        }
+    }
+
 
 
     // Otros métodos del servicio

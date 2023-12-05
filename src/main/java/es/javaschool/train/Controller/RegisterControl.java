@@ -1,5 +1,8 @@
 package es.javaschool.train.Controller;
 
+import es.javaschool.train.Entity.Station;
+import es.javaschool.train.Service.Impl.StationServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,8 @@ import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RegisterControl {
-
+    @Autowired
+    private StationServiceImpl stationService;
     @GetMapping("/login")
     public String login(Model model, @RequestParam(name = "success", required = false) boolean registrationSuccess) {
         // Obtén la autenticación actual
@@ -43,7 +47,8 @@ public class RegisterControl {
     public String index(Model model) {
         // Obtén la autenticación actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+        List<Station> allStations = stationService.consultStations();
+        model.addAttribute("allStations", allStations);
         // Verifica si el usuario está autenticado
         if (authentication != null && authentication.isAuthenticated()) {
             // Obtén los roles del usuario autenticado

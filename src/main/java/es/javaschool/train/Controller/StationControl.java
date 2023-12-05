@@ -1,5 +1,7 @@
 package es.javaschool.train.Controller;
 
+import es.javaschool.train.Entity.Schedule;
+import es.javaschool.train.Entity.Train;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +20,11 @@ import java.util.List;
 public class StationControl {
     @Autowired
     private StationServiceImpl stationServiceIMPL;
+
+    @Autowired
+    private es.javaschool.train.Service.Impl.ScheduleServiceImpl scheduleServiceIMPL;
+    @Autowired
+    private es.javaschool.train.Service.Impl.TrainServiceImpl trainServiceIMPL;
 
     @GetMapping("/stations")
     public String consultStation(Model model) {

@@ -37,6 +37,7 @@ public class ScheduleControl {
         return "schedules";
     }
 
+
     @GetMapping("/schedules/createSchedule")
     public String createAndUpdateScheduleForm(Model model){
         List<Train> trains = trainServiceIMPL.consultTrains();
@@ -80,6 +81,23 @@ public class ScheduleControl {
         }
         return "redirect:/schedules";
     }
+    /*@GetMapping("/index")
+    public String index(Model model) {
+        System.out.println("Index method called");
+        // Obtener todas las estaciones y agregarlas al modelo
+        List<Station> allStations = stationServiceIMPL.consultStations();
+        System.out.println("Number of Stations: " + allStations.size());
+        List<Schedule> schedules;
+        schedules = scheduleServiceIMPL.consultSchedules();
+        List<Train> allTrains = trainServiceIMPL.consultTrains();
+        model.addAttribute("allTrains", allTrains);
+        model.addAttribute("allStations", allStations);
+        model.addAttribute("schedules", schedules);
+
+        // Otros atributos necesarios para la vista...
+
+        return "index"; // Nombre de tu vista index.html
+    }*/
     @GetMapping("/schedules/search")
     public String searchSchedules(
             @RequestParam(name = "originName", required = false) String originName,
@@ -89,7 +107,7 @@ public class ScheduleControl {
     ) {
         List<Schedule> schedules;
 
-        if (originName != null && destinationName != null && dateString != null) {
+        if ((originName != null || destinationName != null) && dateString != null) {
             // Lógica para buscar por estación de origen, estación de destino y fecha
             schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestinationAndDate(originName, destinationName, dateString);
         } else if (originName != null && destinationName != null) {
@@ -98,6 +116,12 @@ public class ScheduleControl {
         } else if (dateString != null) {
             // Lógica para buscar por fecha
             schedules = scheduleServiceIMPL.findSchedulesByDate(dateString);
+        } else if (originName != null) {
+            // Lógica para buscar por estación de origen
+            schedules = scheduleServiceIMPL.findSchedulesByOriginStation(originName);
+        } else if (destinationName != null) {
+            // Lógica para buscar por estación de destino
+            schedules = scheduleServiceIMPL.findSchedulesByDestinationStation(destinationName);
         } else {
             // Lógica para otros casos o mostrar todos los horarios si no se proporciona ningún parámetro de búsqueda
             schedules = scheduleServiceIMPL.consultSchedules();
@@ -110,6 +134,7 @@ public class ScheduleControl {
         model.addAttribute("allStations", allStations);
         return "schedules";
     }
+
 
 
 

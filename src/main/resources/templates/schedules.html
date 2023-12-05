@@ -66,6 +66,7 @@
                             <select class="form-select" name="originName" id="id_station">
                                 <option value="" selected>Select Station</option>
                                 <!-- Itera a través de la lista de estaciones y llena las opciones del menú desplegable -->
+                                <!--/*@thymesVar id="nameStationOrigin" type="es"*/-->
                                 <option th:each="station : ${allStations}" th:value="${station.nameStation}" th:text="${station.nameStation}"></option>
                             </select>
                         </div>
@@ -110,8 +111,8 @@
                     <tr th:each="schedule : ${schedules}">
                         <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:text="${schedule.idStation}"></td>
                         <td th:text="${#dates.format(schedule.time, 'yyyy-MM-dd HH:mm:ss')}"></td>
-                        <td th:text="${schedule.idStation == null ? '' : schedule.idTrain.getNameStationOrigin()}"></td>
-                        <td th:text="${schedule.idStation == null ? '' : schedule.idTrain.getNameStationDestination()}"></td>
+                        <td th:text="${schedule.idStation == null ? '' :schedule.idTrain.stationOrigin.nameStation}"></td>
+                        <td th:text="${schedule.idStation == null ? '' :schedule.idTrain.stationDestination.nameStation}"></td>
                         <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:text="${schedule.idTrain == null ? '' : schedule.idTrain.idTrain}"></td>
 
                         <td>
