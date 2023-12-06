@@ -51,12 +51,25 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("ROLES: " + roles);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
+    @Override
+    public List<Admin> consultAdmins() {
+        return this.adminRepo.findAll();
+    }
+
+    @Override
+    public Admin consultAdmin(int id) {
+        return this.adminRepo.findById(id).get();
+    }
     @Override
    public Admin save(AdminRegi adminRegi) {
+        System.out.println("Fecha de nacimiento (antes de la conversión): " + adminRegi.getDateOfBirth());
+
         Admin admin = new Admin(adminRegi.getEmail(),
                 passwordEncoder.encode(adminRegi.getPassword()),
                 adminRegi.getName(),
                 adminRegi.getSurname(),
+                adminRegi.getDateOfBirth(),
                 Arrays.asList(new Rol("ADMIN")));
 
         return adminRepo.save(admin);

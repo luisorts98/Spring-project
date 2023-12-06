@@ -1,5 +1,8 @@
 package es.javaschool.train.Entity.dto;
 
+import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class AdminRegi {
     private int id;
     private String email;
@@ -9,19 +12,23 @@ public class AdminRegi {
 
     private String surname;
 
-    public AdminRegi(int id, String email, String password, String name, String surname) {
+    private Date dateOfBirth;
+
+    public AdminRegi(int id, String email, String password, String name, String surname, Date dateOfBirth) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public AdminRegi(String email, String password, String name, String surname) {
+    public AdminRegi(String email, String password, String name, String surname, Date dateOfBirth) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public AdminRegi(String email) {
@@ -69,5 +76,18 @@ public class AdminRegi {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

@@ -32,6 +32,13 @@
                             </option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="id_train">Train:</label>
+                        <select id="id_train" name="id_train" class="form-control" required>
+                            <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.nameStationOrigin}"></option>
+                        </select>
+                    </div>
+
                     <div class="box-footer">
                         <br>
                         <button class="btn btn-success" type="submit">Save</button>

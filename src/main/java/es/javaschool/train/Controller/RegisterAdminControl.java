@@ -43,6 +43,7 @@ public class RegisterAdminControl {
     @PostMapping
     public String registerAdmin(@ModelAttribute("admin") AdminRegi adminRegi, Model model) {
         // Lógica de registro aquí
+        System.out.println("Fecha de nacimiento: " + adminRegi.getDateOfBirth());
 
         // Guardar el administrador
         Admin savedAdmin = adminService.save(adminRegi);

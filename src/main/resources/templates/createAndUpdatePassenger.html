@@ -35,12 +35,13 @@
                     </div>
                     <br>
                     <div class="form-group">
-                        <label>date of birth : </label>
-                        <input type="date" name="date_of_birth" th:field="*{dateOfBirth}" placeholder="yyyy-MM-dd" class="from-control" required>
-
+                        <label for="idAdmin">user:</label>
+                        <select id="idAdmin" name="idAdmin" class="form-control" required>
+                            <option th:each="admin : ${allAdmins}" th:value="${admin.getId()}" th:text="${admin.name}"></option>
+                        </select>
                     </div>
-                    <div class="box-footer">
-                        <br>
+
+                    <br>
                         <button class="btn btn-success" type="submit">Save</button>
                     </div>
                 </form>

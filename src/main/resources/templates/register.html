@@ -52,6 +52,10 @@
                     <input id="email" type="email" class="form-control" th:field="*{email}" required autofocus="autofocus">
                 </div>
                 <div class="form-group">
+                    <label class="control-label" for="date_of_birth">date of birth : </label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" th:field="*{dateOfBirth}" placeholder="yyyy-MM-dd" class="from-control" required autofocus="autofocus">
+                </div>
+                <div class="form-group">
                     <label class="control-label" for="password">Password :</label>
                     <input type = "password" id="password" class="form-control" th:field="*{password}" required autofocus="autofocus">
                 </div>

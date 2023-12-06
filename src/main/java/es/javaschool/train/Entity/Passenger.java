@@ -18,21 +18,21 @@ public class Passenger {
 
     @Column(name = "surname")
     private String surname;
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
+
     @OneToMany(mappedBy = "idPassengers", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ticket> tickets;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_admin", nullable = false)
+    private Admin admin;
     public Passenger(){
 
     }
-    public Passenger(int idPassenger, String name, String surname, Date dateOfBirth){
+    public Passenger(int idPassenger, String name, String surname){
         this.idPassenger = idPassenger;
         this.name = name;
         this.surname = surname;
-        this.dateOfBirth = dateOfBirth;
+
     }
     public int getIdPassenger() {
         return idPassenger;
@@ -46,9 +46,7 @@ public class Passenger {
         return surname;
     }
 
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
+
 
     public void setIdPassenger(int idPassenger) {
         this.idPassenger = idPassenger;
@@ -66,11 +64,15 @@ public class Passenger {
         return tickets;
     }
 
+    public Admin getIdAdmin() {
+        return admin;
+    }
+
+    public void setIdAdmin(Admin admin) {
+        this.admin = admin;
+    }
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
 }

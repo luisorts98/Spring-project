@@ -1,8 +1,11 @@
 package es.javaschool.train.Entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 
 import java.util.Collection;
+import java.util.Date;
 
 @Entity
 @Table(name = "Admin", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
@@ -20,6 +23,11 @@ public class Admin {
     @Column(name = "surname")
     private String surname;
 
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date_of_birth")
+    private Date dateOfBirth;
+
 
 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 @JoinTable(
@@ -29,23 +37,25 @@ public class Admin {
 )
     private Collection<Rol> roles;
 
-    public Admin(int id, String email, String password, String name, String surname, Collection<Rol> roles) {
+    public Admin(int id, String email, String password, String name, String surname, Date dateOfBirth , Collection<Rol> roles) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
         this.roles = roles;
     }
     public Admin(){
 
     }
 
-    public Admin(String email, String password, String name, String surname, Collection<Rol> roles) {
+    public Admin(String email, String password, String name, String surname, Date dateOfBirth, Collection<Rol> roles) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
         this.roles = roles;
     }
 
@@ -87,6 +97,14 @@ public class Admin {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Collection<Rol> getRoles() {

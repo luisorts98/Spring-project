@@ -9,4 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface AdminService extends UserDetailsService  {
 
     Admin save(AdminRegi adminRegi);
+
+    public List<Admin> consultAdmins();
+
+    public Admin consultAdmin(int id);
 }
