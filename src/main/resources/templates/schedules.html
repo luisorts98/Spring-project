@@ -118,9 +118,10 @@
                         <td>
                             <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/schedules/edit/{idSchedule}(idSchedule=${schedule.idSchedule})}" class="btn btn-info">Edit</a>
                             <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/schedules/{idSchedule}(idSchedule=${schedule.idSchedule})}" class="btn btn-danger">Delete</a>
-                            <a th:if="${#authorization.expression('hasRole(''USER'')')}"
-                               th:href="@{/schedules/buyTicket/{idSchedule}(idSchedule=${schedule.idSchedule})}"
-                               class="btn btn-success">Buy Ticket</a>
+
+                            <form th:action="@{/schedules/buyTicket/{idSchedule}(idSchedule=${schedule.idSchedule})}" method="post">
+                                <button type="submit" class="btn btn-success">Buy Ticket</button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>

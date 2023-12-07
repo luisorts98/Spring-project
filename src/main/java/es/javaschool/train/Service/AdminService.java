@@ -13,4 +13,8 @@ public interface AdminService extends UserDetailsService  {
     public List<Admin> consultAdmins();
 
     public Admin consultAdmin(int id);
+
+    public Admin findByname(String name);
+
+    public List<Admin> findByNameList(String name);
 }

@@ -38,6 +38,10 @@ public class Schedule {
         return idTrain;
     }
 
+    public int getIdTrainId() {
+        return idTrain.getIdTrain();
+    }
+
     public Station getIdStation() {
         return idStation;
     }

@@ -1,5 +1,6 @@
 package es.javaschool.train.Service.Impl;
 
+import es.javaschool.train.Entity.Train;
 import es.javaschool.train.Service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -130,7 +131,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // Otros métodos del servicio
 
-
+    public Train getTrainIdByScheduleId(int idSchedule) {
+        Schedule schedule = scheduleRepo.findById(idSchedule).get();
+        return schedule.getIdTrain();
+    }
 
     @Override
     public Schedule consultSchedule(int id) {

@@ -41,4 +41,7 @@ public class PassengerServiceImpl implements PassengerService{
         return this.passengerRepo.save(passenger);
     }
 
+    public List<Passenger> findByAdmin_Username(String username) {
+        return this.passengerRepo.findByAdmin_Username(username);
+    }
 }

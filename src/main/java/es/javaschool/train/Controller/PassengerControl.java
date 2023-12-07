@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import java.util.Date;
 import es.javaschool.train.Service.Impl.AdminServiceImpl;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class PassengerControl {
         model.addAttribute("passenger",  new Passenger());
         return "createAndUpdatePassenger";
     }
+
 
    @PostMapping("/passengers")
    public String createAndUpdatePassenger(@RequestParam(value ="idAdmin") int idAdmin, Passenger passenger){

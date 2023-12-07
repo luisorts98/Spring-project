@@ -58,6 +58,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin findByname(String name) {
+        return this.adminRepo.findByName(name);
+    }
+    @Override
+    public List<Admin> findByNameList(String name) {
+        return this.adminRepo.findByNameList(name);
+    }
+    @Override
     public Admin consultAdmin(int id) {
         return this.adminRepo.findById(id).get();
     }

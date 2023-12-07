@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.*;
 import es.javaschool.train.Service.Impl.TicketServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
+
+import java.security.Principal;
 import java.util.List;
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Service.Impl.PassengerServiceImpl;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
-
+import es.javaschool.train.Entity.Schedule;
+import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
+import es.javaschool.train.Entity.Admin;
+import java.util.Collections;
+import org.springframework.security.core.Authentication;
 @Controller
 @RequestMapping("/")
 public class TicketControl {
@@ -23,6 +29,15 @@ public class TicketControl {
     private PassengerServiceImpl passengerServiceIMPL;
    @Autowired
     private TrainServiceImpl ticketServiceImpl;
+
+    @Autowired
+    private ScheduleServiceImpl scheduleService;
+
+    @Autowired
+    private es.javaschool.train.Service.Impl.AdminServiceImpl adminService;
+
+
+
 
     @GetMapping("/tickets")
     public String consultTicket(Model model){
@@ -35,6 +50,16 @@ public class TicketControl {
         return "tickets";
     }
 
+    @GetMapping("/userTickets")
+    public String userTickets(Model model, Principal principal) {
+        String username = principal.getName();
+
+        // Obtener todos los tickets asociados al usuario actual
+        List<Ticket> userTickets = ticketServiceIMPL.getAllUserTickets(username);
+
+        model.addAttribute("userTickets", userTickets);
+        return "userTickets";
+    }
     @GetMapping("/tickets/createTicket")
     public String createAndUpdateTicketForm(Model model){
         List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
@@ -45,6 +70,30 @@ public class TicketControl {
         model.addAttribute("allTrains", trains);
         return "createAndUpdateTicket";
     }
+    @PostMapping("/schedules/buyTicket/{idSchedule}")
+    public String buyTicket(@PathVariable int idSchedule, Authentication authentication, Model model) {
+        String username = authentication.getName();
+        List<Admin> admins = adminService.findByNameList(username);
+
+
+        // Crear un Passenger asociado al idAdmin
+        Passenger passenger = new Passenger();
+        passenger.setIdAdmin(admins.get(0));
+
+        passenger = passengerServiceIMPL.createAndUpdatePassenger(passenger);
+        // Obtener el Schedule
+        Train idTrain = scheduleService.getTrainIdByScheduleId(idSchedule);
+
+        // Crear un Ticket asociado al Passenger y al Schedule
+        Ticket ticket = new Ticket();
+        ticket.setIdPassengers(passenger);
+        ticket.setIdTrain(idTrain);
+        ticketServiceIMPL.createAndUpdateTicket(ticket);
+
+        // Redirigir a la página de userTickets para mostrar los tickets del usuario
+        return "redirect:/userTickets";
+    }
+
     @PostMapping("/tickets")
     public String createAndUpdateTicket(@RequestParam(value="id_passenger") int idPassenger, @RequestParam(value ="id_train") int idTrain, @ModelAttribute("ticket") Ticket ticket){
         Passenger passenger = passengerServiceIMPL.consultPassenger(idPassenger);

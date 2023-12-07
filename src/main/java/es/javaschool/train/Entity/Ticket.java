@@ -40,6 +40,9 @@ public class Ticket {
         return idPassengers;
     }
 
+    public int getIdPassenger() {
+        return idPassengers.getIdPassenger();
+    }
     public Train getIdTrain() {
         return idTrain;
     }
