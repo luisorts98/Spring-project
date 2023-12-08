@@ -59,8 +59,8 @@
             <tbody>
             <tr th:each="passenger : ${passengers}">
                 <td th:text="${passenger.idPassenger}"></td>
-                <td th:text="${passenger.name}"></td>
-                <td th:text="${passenger.surname}"></td>
+                <td th:text="${passenger.idAdmin.name}"></td>
+                <td th:text="${passenger.idAdmin.surname}"></td>
                 <td>
                     <a th:href="@{/passengers/edit/{id_passenger}(id_passenger=${passenger.idPassenger})}" class="btn btn-info">Edit</a>
                     <a th:href="@{/passengers/{idPassenger}(idPassenger=${passenger.idPassenger})}" class="btn btn-danger">Delete</a>

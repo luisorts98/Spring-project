@@ -33,6 +33,20 @@
                         <label>seats : </label>
                         <input type="text" name="seats" th:field="*{train.seats}" class="from-control" placeholder="Digite el numero de asientso" required>
                     </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="idStation">Station Destination:</label>
+                        <select id="idStation" name="idStation" class="form-control" required>
+                            <option th:each="station : ${allStations}" th:value="${station.idStation}" th:text="${station.getNameStation()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idStation2">Station Origin:</label>
+                        <select id="idStation2" name="idStation2" class="form-control" required>
+                            <option th:each="station2 : ${allStations}" th:value="${station2.idStation}" th:text="${station2.nameStation}"></option>
+                        </select>
+                    </div>
                     <div class="box-footer">
                         <br>
                         <button class="btn btn-success" type="submit">Save</button>

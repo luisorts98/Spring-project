@@ -64,8 +64,6 @@ public class PassengerControl {
     public String modifyPassenger(@PathVariable("id_passenger") int id, @ModelAttribute("passenger") Passenger passenger, Model model){
         Passenger passengerModify = this.passengerServiceIMPL.consultPassenger(id);
         passengerModify.setIdPassenger(id);
-        passengerModify.setName(passenger.getName());
-        passengerModify.setSurname(passenger.getSurname());
         this.passengerServiceIMPL.modifyPassenger(passengerModify);
         return "redirect:/passengers";
     }

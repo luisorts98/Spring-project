@@ -64,9 +64,10 @@ public class TrainControl {
         return "editTrain"; // Debes crear esta vista en Thymeleaf
     }
     @PostMapping("/trains/{id}")
-    public String modifyTrain(@PathVariable int id, @ModelAttribute("train") Train train, @RequestParam("idStation") int idPassenger ,Model model) {
+    public String modifyTrain(@PathVariable int id, @ModelAttribute("train") Train train, @RequestParam("idStation") int idPassenger, @RequestParam(value = "idStation2") int idStation2,Model model) {
         Train trainModify = this.trainServiceIMPL.consultTrain(id);
         trainModify.setIdTrain(id);
+        trainModify.setStationOrigin(stationServiceIMPL.consultStation(idStation2));
         trainModify.setSeats(train.getSeats());
         trainModify.setStations(train.getStations());
         trainModify.setIdStation(stationServiceIMPL.consultStation(idPassenger));

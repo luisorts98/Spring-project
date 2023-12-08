@@ -58,7 +58,7 @@
                     <tr th:each="ticket : ${tickets}">
                         <td th:text="${ticket.idTicket}"></td>
                         <td th:text="${ticket.idPassengers == null ? '' : ticket.idPassengers.idPassenger}"></td>
-                        <td th:text="${ticket.idPassengers == null ? '' : ticket.idPassengers.name}"></td>
+                        <td th:text="${ticket.idPassengers == null ? '' : ticket.idPassengers.idAdmin.name}"></td>
                         <td>
                             <a th:href="@{/tickets/edit/{idTicket}(idTicket=${ticket.idTicket})}" class="btn btn-info">Edit</a>
                             <a th:href="@{/tickets/{idTicket}(idTicket=${ticket.idTicket})}" class="btn btn-danger">Delete</a>
