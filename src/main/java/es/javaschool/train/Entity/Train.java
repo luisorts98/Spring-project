@@ -77,9 +77,7 @@ public class Train {
         return stationOrigin;
     }
     // Update this method to handle null stationOrigin
-    public String getNameStationOrigin() {
-        return (stationOrigin != null) ? stationOrigin.getNameStation() : null;
-    }
+
     public String getNameStationDestination() {
         return (stationDestination != null) ? stationDestination.getNameStation() : null;
     }
@@ -88,6 +86,14 @@ public class Train {
     }
     public void setIdStation(Station idStat) {
         this.stationDestination = idStat;
+    }
+
+    public void setStationOrigin(Station stationOrigin) {
+        this.stationOrigin = stationOrigin;
+    }
+
+    public String getNameStationOrigin() {
+        return (stationOrigin != null) ? stationOrigin.getNameStation() : null;
     }
 
 

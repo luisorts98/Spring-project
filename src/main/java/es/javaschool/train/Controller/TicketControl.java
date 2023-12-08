@@ -77,10 +77,7 @@ public class TicketControl {
         String username = authentication.getName();
         List<Admin> admins = adminService.findByNameList(username);
 
-        // Verificar si el usuario ya tiene un billete para este tren y horario
-        // Verificar si el usuario ya tiene un billete para otro horario con el mismo tren
 
-        // Crear un Passenger asociado al idAdmin
         Passenger passenger = new Passenger();
         passenger.setIdAdmin(admins.get(0));
 

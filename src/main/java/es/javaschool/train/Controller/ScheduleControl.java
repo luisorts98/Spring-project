@@ -15,6 +15,8 @@ import es.javaschool.train.Service.Impl.TrainServiceImpl;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 
 import java.util.List;
@@ -39,11 +41,21 @@ public class ScheduleControl {
         String username = authentication.getName();
         List<Schedule> schedules = this.scheduleServiceIMPL.consultSchedules();
         Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
+        Map<Integer, Boolean> spaceAvailableMap = new HashMap<>();
+        Map<Integer, Duration> timeRemainingMap = new HashMap<>();  // Nueva línea
+
 
         for (Schedule schedule : schedules) {
             int idSchedule = schedule.getIdSchedule();
             boolean ticketExists = ticketServiceIMPL.hasTicketForUserAndTrain(username, idSchedule);
             ticketExistsMap.put(idSchedule, ticketExists);
+            boolean spaceAvailable = ticketServiceIMPL.isSpaceAvailable(idSchedule);
+            spaceAvailableMap.put(idSchedule, spaceAvailable);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime departureTime = schedule.getTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+            Duration timeRemaining = Duration.between(now, departureTime);
+            timeRemainingMap.put(idSchedule, timeRemaining);
+
         }
 
         List<Train> allTrains = trainServiceIMPL.consultTrains();
@@ -52,6 +64,9 @@ public class ScheduleControl {
         model.addAttribute("schedules",schedules);
         model.addAttribute("allTrains", allTrains);
         model.addAttribute("allStations", allStations);
+        model.addAttribute("spaceAvailableMap", spaceAvailableMap);
+        model.addAttribute("timeRemainingMap", timeRemainingMap);  // Nueva línea
+
         return "schedules";
     }
 

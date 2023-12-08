@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Calendar;
+import java.util.ArrayList;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -36,6 +37,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     public Schedule createAndUpdateSchedule(Schedule schedule) {
         schedule.setIdSchedule(schedule.getIdSchedule());
         return this.scheduleRepo.save(schedule);
+    }
+
+    public Schedule findById(int idSchedule) {
+        return scheduleRepo.findById(idSchedule).get();
     }
 
     public List<Schedule> findSchedulesByStationNameAndDestinationAndDate(String originStationName, String destinationStationName, String dateString) {

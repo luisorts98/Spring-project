@@ -45,18 +45,15 @@ public class TrainControl {
         return "createAndUpdateTrain"; // Debes crear esta vista en Thymeleaf
     }
     @PostMapping("/trains")
-    public String createAndUpdateTrain(@RequestParam(value = "id_station") int idStation, @ModelAttribute("train") Train train, Model model) {
+    public String createAndUpdateTrain(@RequestParam(value = "id_station") int idStation, @RequestParam(value = "id_station2") int idStation2, @ModelAttribute("train") Train train, Model model) {
         Station station = stationServiceIMPL.consultStation(idStation);
+        Station station2 = stationServiceIMPL.consultStation(idStation2);
+        train.setStationOrigin(station2);
         train.setIdStation(station);
         this.trainServiceIMPL.createAndUpdateTrain(train);
         return "redirect:/trains";
     }
-   /* @PutMapping
-    @RequestMapping(value = "modifyTrain", method = RequestMethod.PUT)
-    public ResponseEntity<?> modifyTrain(@RequestBody Train train) {
-        Train trainModify = trainServiceIMPL.modifyTrain(train);
-        return ResponseEntity.status(HttpStatus.CREATED).body(trainModify);
-    }*/
+
 
     @GetMapping("/trains/edit/{id}")
     public String modifyTrainForm(@PathVariable int id, Model model) {

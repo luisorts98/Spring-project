@@ -66,4 +66,8 @@ public class Schedule {
         this.time = time;
     }
 
+    public int getMaxSeats() {
+        return idTrain.getSeats();
+    }
+
 }

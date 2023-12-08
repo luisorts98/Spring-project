@@ -36,5 +36,4 @@ public interface ScheduleRepo extends JpaRepository<Schedule,Integer>{
     List<Schedule> findByStationOrigin(@Param("originName") String originName);
 
 
-
 }

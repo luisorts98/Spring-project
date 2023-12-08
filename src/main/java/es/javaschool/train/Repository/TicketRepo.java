@@ -15,4 +15,8 @@ public interface TicketRepo extends JpaRepository<Ticket,Integer>{
 @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t " +
             "WHERE t.idPassengers.admin.name = :username")
     boolean existsByUser(@Param("username") String username);
+
+
+    @Query("SELECT COUNT(t) FROM Ticket t WHERE t.idTrain.idTrain = :idTrain")
+    int countByTrain_IdTrain(int idTrain);
 }

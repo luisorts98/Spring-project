@@ -35,15 +35,15 @@
                     <!-- Agrega este bloque de código dentro de tu formulario -->
                     <div class="form-group">
                         <label for="id_station">Station Destination:</label>
-                        <select id="id_station" name="id_station" class="form-control" required>
-                            <option th:each="station : ${allStations}" th:value="${station.idStation}" th:text="${station.nameStation}"></option>
+                        <select id="id_station" name="station_destination.idStation" class="form-control" required>
+                            <option th:each="station : ${allStations}" th:value="${station.idStation}" th:text="${station.getNameStation()}"></option>
                         </select>
                     </div>
                     <!-- End of the block -->
                     <div class="form-group">
-                        <label for="id_station_origin">Station Origin:</label>
-                        <select id="id_station_origin" name="stationOrigin.idStation" class="form-control" required>
-                            <option th:each="station : ${allStations}" th:value="${station.idStation}" th:text="${station.nameStation}"></option>
+                        <label for="id_station2">Station Origin:</label>
+                        <select id="id_station2" name="stationOrigin.idStation" class="form-control" required>
+                            <option th:each="station2 : ${allStations}" th:value="${station2.idStation}" th:text="${station2.nameStation}"></option>
                         </select>
                     </div>
 
