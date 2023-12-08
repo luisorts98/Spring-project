@@ -19,6 +19,8 @@ import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Entity.Admin;
 import java.util.Collections;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.support.SessionStatus;
+
 @Controller
 @RequestMapping("/")
 public class TicketControl {
@@ -71,16 +73,19 @@ public class TicketControl {
         return "createAndUpdateTicket";
     }
     @PostMapping("/schedules/buyTicket/{idSchedule}")
-    public String buyTicket(@PathVariable int idSchedule, Authentication authentication, Model model) {
+    public String buyTicket(@PathVariable int idSchedule, Authentication authentication, Model model, SessionStatus sessionStatus) {
         String username = authentication.getName();
         List<Admin> admins = adminService.findByNameList(username);
 
+        // Verificar si el usuario ya tiene un billete para este tren y horario
+        // Verificar si el usuario ya tiene un billete para otro horario con el mismo tren
 
         // Crear un Passenger asociado al idAdmin
         Passenger passenger = new Passenger();
         passenger.setIdAdmin(admins.get(0));
 
         passenger = passengerServiceIMPL.createAndUpdatePassenger(passenger);
+
         // Obtener el Schedule
         Train idTrain = scheduleService.getTrainIdByScheduleId(idSchedule);
 
@@ -90,9 +95,13 @@ public class TicketControl {
         ticket.setIdTrain(idTrain);
         ticketServiceIMPL.createAndUpdateTicket(ticket);
 
+        sessionStatus.setComplete();
+
+        // Añadir ticketExists al modelo
         // Redirigir a la página de userTickets para mostrar los tickets del usuario
         return "redirect:/userTickets";
     }
+
 
     @PostMapping("/tickets")
     public String createAndUpdateTicket(@RequestParam(value="id_passenger") int idPassenger, @RequestParam(value ="id_train") int idTrain, @ModelAttribute("ticket") Ticket ticket){

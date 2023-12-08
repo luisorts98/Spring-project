@@ -44,6 +44,17 @@ public class TicketServiceImpl implements TicketService {
         return userTickets;
     }
 
+    public boolean hasTicketForUser(String username) {
+        // Lógica para verificar si el usuario ya tiene un billete
+        return ticketRepo.existsByUser(username);
+    }
+
+    public boolean hasTicketForUserAndTrain(String username, int idSchedule) {
+        // Lógica para verificar si el usuario ya tiene un billete para otro horario con el mismo tren
+        return ticketRepo.existsByUserAndTrain(username, idSchedule);
+    }
+
+
     @Override
     public Ticket consultTicket(int Number) {
         return this.ticketRepo.findById(Number).get();

@@ -2,6 +2,17 @@ package es.javaschool.train.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import es.javaschool.train.Entity.Ticket;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 public interface TicketRepo extends JpaRepository<Ticket,Integer>{
 
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t " +
+            "WHERE t.idPassengers.admin.name = :username " +
+            "AND t.idTrain.idTrain = (SELECT s.idTrain.idTrain FROM Schedule s WHERE s.idSchedule = :idSchedule)")
+    boolean existsByUserAndTrain(@Param("username") String username, @Param("idSchedule") int idSchedule);
+
+@Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Ticket t " +
+            "WHERE t.idPassengers.admin.name = :username")
+    boolean existsByUser(@Param("username") String username);
 }

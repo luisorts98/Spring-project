@@ -1,6 +1,7 @@
 package es.javaschool.train.Controller;
 
 import es.javaschool.train.Entity.*;
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import java.util.List;
 @Controller
 @RequestMapping("/")
+@SessionAttributes("ticketExists")
 public class ScheduleControl {
     @Autowired
     private ScheduleServiceImpl scheduleServiceIMPL;
@@ -26,11 +31,24 @@ public class ScheduleControl {
     @Autowired
     private StationServiceImpl stationServiceIMPL;
 
+    @Autowired
+    private es.javaschool.train.Service.Impl.TicketServiceImpl ticketServiceIMPL;
+
     @GetMapping("/schedules")
-    public String consultSchedule(Model model){
+    public String consultSchedule(Model model, Authentication authentication){
+        String username = authentication.getName();
         List<Schedule> schedules = this.scheduleServiceIMPL.consultSchedules();
+        Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
+
+        for (Schedule schedule : schedules) {
+            int idSchedule = schedule.getIdSchedule();
+            boolean ticketExists = ticketServiceIMPL.hasTicketForUserAndTrain(username, idSchedule);
+            ticketExistsMap.put(idSchedule, ticketExists);
+        }
+
         List<Train> allTrains = trainServiceIMPL.consultTrains();
         List<Station> allStations = stationServiceIMPL.consultStations();// Supongamos que tienes un método para obtener todos los pasajeros
+        model.addAttribute("ticketExistsMap", ticketExistsMap);
         model.addAttribute("schedules",schedules);
         model.addAttribute("allTrains", allTrains);
         model.addAttribute("allStations", allStations);
