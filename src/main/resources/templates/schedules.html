@@ -131,19 +131,19 @@
                             <!-- Buy Ticket Form -->
                             <form th:action="@{/schedules/buyTicket/{idSchedule}(idSchedule=${schedule.idSchedule})}" method="post">
                                 <button type="submit" class="btn btn-success"
-                                        th:disabled="${ticketExistsMap[schedule.idSchedule] == null or ticketExistsMap[schedule.idSchedule] or (not spaceAvailableMap[schedule.idSchedule] or timeRemainingMap[schedule.idSchedule]?.toMinutes() < 10)}">
+                                        th:if="${userRoles.contains('USER')}" th:disabled="${ticketExistsMap[schedule.idSchedule] == null or ticketExistsMap[schedule.idSchedule] or (not spaceAvailableMap[schedule.idSchedule] or timeRemainingMap[schedule.idSchedule]?.toMinutes() < 10)}">
                                     Buy Ticket
                                 </button>
                             </form>
 
                             <!-- Mostrar mensaje de error si existe -->
-                            <div th:if="${ticketExistsMap != null and ticketExistsMap[schedule.idSchedule]}" class="alert alert-danger mt-3" role="alert">
+                            <div  th:if="${ticketExistsMap != null and ticketExistsMap[schedule.idSchedule] and userRoles.contains('USER')}" class="alert alert-danger mt-3" role="alert">
                                 <p class="text-center">You already have a ticket for this schedule</p>
                             </div>
-                            <div th:if="${spaceAvailableMap != null and spaceAvailableMap[schedule.idSchedule] == false}" class="alert alert-danger mt-3" role="alert">
+                            <div th:if="${spaceAvailableMap != null and spaceAvailableMap[schedule.idSchedule] == false and userRoles.contains('USER')}" class="alert alert-danger mt-3" role="alert">
                                 <p class="text-center">No space available for this schedule</p>
                             </div>
-                            <div th:if="${timeRemainingMap != null and timeRemainingMap[schedule.idSchedule].toMinutes() < 10}" class="alert alert-danger mt-3" role="alert">
+                            <div th:if="${timeRemainingMap != null and timeRemainingMap[schedule.idSchedule].toMinutes() < 10 and userRoles.contains('USER')}" class="alert alert-danger mt-3" role="alert">
                                 <p class="text-center">Less than 10 minutes remaining for this schedule</p>
                             </div>
                         </td>

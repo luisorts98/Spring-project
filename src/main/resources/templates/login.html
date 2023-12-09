@@ -61,6 +61,7 @@
             margin-top: 20px;
         }
     </style>
+
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -117,5 +118,28 @@
 </div>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-o9IB52U1JHo+/2rUDfihjOJzvMT87ZTmQFqz5uYTQAQBnx3rYDI5U1BRiVoSTMEr" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        var registrationSuccess = getParameterByName("success");
+        if (registrationSuccess === "true") {
+            alert("You've successfully registered");
+            // Aquí puedes redirigir a la página de inicio de sesión
+            window.location.href = '/login';
+        }
+    });
+
+    // Función para obtener parámetros de la URL
+    function getParameterByName(name) {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+</script>
 </body>
 </html>

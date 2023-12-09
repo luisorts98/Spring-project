@@ -16,5 +16,6 @@ public interface AdminService extends UserDetailsService  {
 
     public Admin findByname(String name);
 
+    public boolean emailExists(String email);
     public List<Admin> findByNameList(String name);
 }

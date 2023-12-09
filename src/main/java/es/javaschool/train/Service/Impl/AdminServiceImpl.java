@@ -65,6 +65,11 @@ public class AdminServiceImpl implements AdminService {
     public List<Admin> findByNameList(String name) {
         return this.adminRepo.findByNameList(name);
     }
+
+    @Override
+    public boolean emailExists(String email) {
+        return adminRepo.findByEmail(email) != null;
+    }
     @Override
     public Admin consultAdmin(int id) {
         return this.adminRepo.findById(id).get();

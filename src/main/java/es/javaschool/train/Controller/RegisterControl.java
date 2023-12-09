@@ -14,13 +14,15 @@ import org.springframework.ui.Model;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RegisterControl {
     @Autowired
     private StationServiceImpl stationService;
     @GetMapping("/login")
-    public String login(Model model, @RequestParam(name = "success", required = false) boolean registrationSuccess) {
+    public String login(Model model, RedirectAttributes redirectAttributes) {
         // Obtén la autenticación actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -37,8 +39,10 @@ public class RegisterControl {
         }
 
         // Pasa el mensaje de registro exitoso al modelo
-        model.addAttribute("registrationSuccess", registrationSuccess);
-
+        if (redirectAttributes.getFlashAttributes().containsKey("registrationSuccess")) {
+            // Pasa el mensaje de registro exitoso al modelo
+            model.addAttribute("registrationSuccess", true);
+        }
         return "login";
     }
 

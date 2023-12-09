@@ -32,11 +32,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div th:if="${param.success}">
+            <div th:if="${registrationSuccess}">
                 <div class="alert alert-info">You've successfully registered to
                     our awesome app!</div>
             </div>
-
+            <div th:if="${registrationError}" class="alert alert-danger">
+                <strong>Error:</strong> <span th:text="${registrationError}"></span>
+            </div>
             <h1>Register</h1>
             <form th:action="@{/register}" method="post" th:object="${admin}">
                 <div class="form-group">
@@ -60,7 +62,7 @@
                     <input type = "password" id="password" class="form-control" th:field="*{password}" required autofocus="autofocus">
                 </div>
                 <div class="form-group">
-                  <button type="submit" class="btn btn-success">Register</button>
+                    <button type="submit" class="btn btn-success" onclick="validateAndSubmit()">Register</button>
                     <span> You are register <a th:href="@{/login}"> start session here</a></span>
                 </div>
             </form>
@@ -71,5 +73,42 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+    // Función para validar el formulario antes de enviarlo
+    function validateRegistration() {
+        var emailInput = document.getElementById('email');
+        var registrationError = document.getElementById('registrationError');
+
+        // Verificar si el campo de correo electrónico está vacío
+        if (!emailInput.value.trim()) {
+            registrationError.innerHTML = "Email cannot be empty.";
+            return false;
+        }
+
+        // Puedes agregar más validaciones aquí según tus necesidades
+
+        return true;
+    }
+</script>
+<script>
+    function validateAndSubmit() {
+        // Aquí puedes agregar lógica de validación si es necesario
+
+        // Verifica si hay mensajes de éxito o error
+        var registrationSuccess = document.getElementById('registrationSuccess');
+        var registrationError = document.getElementById('registrationError');
+
+        // Si hay un mensaje de éxito, muestra una alerta, envía el formulario y redirige a la página de inicio de sesión
+        if (registrationSuccess) {
+            alert('Registration successful!'); // Puedes personalizar el mensaje de alerta
+            document.forms[0].submit(); // Envía el formulario
+        }
+
+        // Si hay un mensaje de error, muestra una alerta de error
+        if (registrationError) {
+            alert('Registration failed. ' + registrationError.innerText); // Puedes personalizar el mensaje de alerta de error
+        }
+    }
+</script>
 </body>
 </html>
