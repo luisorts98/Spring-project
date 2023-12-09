@@ -1,14 +1,12 @@
 package es.javaschool.train.Controller;
 
-import es.javaschool.train.Entity.Schedule;
-import es.javaschool.train.Entity.Train;
+import es.javaschool.train.Entity.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,6 +61,33 @@ public class StationControl {
         Station stationModify = stationServiceIMPL.modifyStation(station);
         return ResponseEntity.status(HttpStatus.CREATED).body(stationModify);
     }*/
+
+    @GetMapping("/stations/search")
+    public String searchStation(@RequestParam(value = "name") String nameStation, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
+
+        List<Station> stations = this.stationServiceIMPL.findStationsByName(nameStation);
+        model.addAttribute("stations", stations);
+        List<Station> allStations = this.stationServiceIMPL.consultStations();
+        model.addAttribute("allStations", allStations);
+        // Agrega este bloque para mostrar el mensaje cuando no hay resultados
+        if (stations.isEmpty()) {
+            model.addAttribute("noResults", true);
+        } else {
+            model.addAttribute("noResults", false);
+        }
+
+        return "stations"; // Debes crear esta vista en Thymeleaf
+    }
+
+
 
     @GetMapping("/stations/edit/{id}")
     public String modifyStationForm(@PathVariable int id, Model model) {

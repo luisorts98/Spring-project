@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private static final Logger log = LoggerFactory.getLogger(ScheduleServiceImpl.class);
     @Override
     public List<Schedule> consultSchedules() {
-        return (List<Schedule>) this.scheduleRepo.findAll();
+        return this.scheduleRepo.findAll();
     }
 
     @Override

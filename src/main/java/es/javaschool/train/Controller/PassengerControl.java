@@ -48,6 +48,23 @@ public class PassengerControl {
         return "passengers";
     }
 
+    @GetMapping("/passengers/search")
+    public String searchPassenger(@RequestParam(value = "name") String name, Model model, Authentication authentication  ){
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
+        List<Passenger> passengers = this.passengerServiceIMPL.searchPassenger(name);
+        List<Admin> allAdmins = this.adminServiceIMPL.consultAdmins();
+        model.addAttribute("passengers",passengers);
+        model.addAttribute("allAdmins",allAdmins);
+        List<Passenger> allPassengers = passengerServiceIMPL.consultPassengers();
+        model.addAttribute("allPassengers", allPassengers);
+        return "passengers";
+    }
+
     @GetMapping("/passengers/createPassenger")
     public String createAndUpdatePassengerForm(Model model){
         List<Admin> admins = this.adminServiceIMPL.consultAdmins();

@@ -14,4 +14,12 @@ public interface TrainRepo extends JpaRepository<Train,Integer> {
             @Param("destinationName") String destinationName
     );
 
+
+    @Query("SELECT t FROM Train t WHERE t.stationOrigin.nameStation LIKE %:originName%")
+    List<Train> findByStationName(@Param("originName") String originName);
+
+    @Query("SELECT t FROM Train t WHERE t.stationDestination.nameStation LIKE %:destinationName%")
+    List<Train> findByStationDestination(@Param("destinationName") String destinationName);
+
+
 }

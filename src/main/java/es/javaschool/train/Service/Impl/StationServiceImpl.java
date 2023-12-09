@@ -24,6 +24,9 @@ public class StationServiceImpl implements StationService {
         return this.stationRepo.save(station);
     }
 
+  public List<Station> findStationsByName(String nameStation) {
+        return this.stationRepo.findByNameStation(nameStation);
+    }
     @Override
     public Station consultStation(int Number) {
         return this.stationRepo.findById(Number).get();

@@ -25,6 +25,10 @@ public class PassengerServiceImpl implements PassengerService{
         return this.passengerRepo.save(passenger);
     }
 
+   public List<Passenger>  searchPassenger(String name){
+        return this.passengerRepo.findByAdmin_Username(name);
+    }
+
 
     @Override
     public Passenger consultPassenger(int Number) {

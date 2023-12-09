@@ -50,7 +50,9 @@
                     </div>
                 </form>
                 <th:block th:if="${#lists.isEmpty(tickets) or tickets == null}">
-                    <p>No results found. Showing all tickets.</p>
+                    <div class="alert alert-info" role="alert">
+                        <p>No results found. Showing all tickets.</p>
+                    </div>
                 </th:block>
 
                 <a class="btn btn-danger position-absolute top-0 end-0 m-3" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
@@ -64,6 +66,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     <tr th:each="ticket : ${#lists.isEmpty(tickets) or tickets == null ? allTickets : tickets}">
                         <td th:text="${ticket.idTicket}"></td>
                         <td th:text="${ticket.idPassengers == null ? '' : ticket.idPassengers.idPassenger}"></td>

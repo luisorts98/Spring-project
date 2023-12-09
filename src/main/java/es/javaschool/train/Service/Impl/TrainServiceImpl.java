@@ -29,6 +29,14 @@ public class TrainServiceImpl implements TrainService{
     public List<Train> findTrainsByStationNameAndDestination(String originStationName, String destinationStationName) {
         return this.trainRepo.findByStationNameAndStationDestination(originStationName, destinationStationName);
     }
+
+    public List<Train> findTrainsByStationName(String originStationName) {
+        return this.trainRepo.findByStationName(originStationName);
+    }
+
+   public List<Train> findTrainsByStationDestination(String destinationStationName) {
+        return this.trainRepo.findByStationDestination(destinationStationName);
+    }
     @Override
     public Train consultTrain(int number) {
         return this.trainRepo.findById(number).get();

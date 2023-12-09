@@ -4,6 +4,7 @@ import es.javaschool.train.Entity.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,9 @@ public class ScheduleControl {
     private es.javaschool.train.Service.Impl.TicketServiceImpl ticketServiceIMPL;
 
     @GetMapping("/schedules")
-    public String consultSchedule(Model model, Authentication authentication){
+    public String consultSchedule(@RequestParam(name = "originName", required = false) String originName,
+                                  @RequestParam(name = "destinationName", required = false) String destinationName,
+                                  @RequestParam(name = "date", required = false) String dateString,Model model, Authentication authentication){
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> userRoles = authorities.stream()
@@ -51,8 +54,27 @@ public class ScheduleControl {
 
         // Pasa los roles al modelo
         model.addAttribute("userRoles", userRoles);
+        List<Schedule> schedules;
+        if ((originName != null || destinationName != null) && dateString != null) {
+            // Lógica para buscar por estación de origen, estación de destino y fecha
+            schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestinationAndDate(originName, destinationName, dateString);
+        } else if (originName != null && destinationName != null) {
+            // Lógica para buscar por estación de origen y estación de destino
+            schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestination(originName, destinationName);
+        } else if (dateString != null) {
+            // Lógica para buscar por fecha
+            schedules = scheduleServiceIMPL.findSchedulesByDate(dateString);
+        } else if (originName != null) {
+            // Lógica para buscar por estación de origen
+            schedules = scheduleServiceIMPL.findSchedulesByOriginStation(originName);
+        } else if (destinationName != null) {
+            // Lógica para buscar por estación de destino
+            schedules = scheduleServiceIMPL.findSchedulesByDestinationStation(destinationName);
+        } else {
+            // Mostrar todos los horarios si no se proporcionan parámetros de búsqueda válidos
+            schedules = scheduleServiceIMPL.consultSchedules();
+        }
         String username = authentication.getName();
-        List<Schedule> schedules = this.scheduleServiceIMPL.consultSchedules();
         Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
         Map<Integer, Boolean> spaceAvailableMap = new HashMap<>();
         Map<Integer, Duration> timeRemainingMap = new HashMap<>();  // Nueva línea
@@ -73,12 +95,16 @@ public class ScheduleControl {
 
         List<Train> allTrains = trainServiceIMPL.consultTrains();
         List<Station> allStations = stationServiceIMPL.consultStations();// Supongamos que tienes un método para obtener todos los pasajeros
+        List<Schedule> allSchedules = scheduleServiceIMPL.consultSchedules();
+
         model.addAttribute("ticketExistsMap", ticketExistsMap);
         model.addAttribute("schedules",schedules);
+        model.addAttribute("allSchedules", allSchedules);
         model.addAttribute("allTrains", allTrains);
         model.addAttribute("allStations", allStations);
         model.addAttribute("spaceAvailableMap", spaceAvailableMap);
         model.addAttribute("timeRemainingMap", timeRemainingMap);  // Nueva línea
+
 
         return "schedules";
     }
@@ -188,15 +214,22 @@ public class ScheduleControl {
             Duration timeRemaining = Duration.between(now, departureTime);
             timeRemainingMap.put(idSchedule, timeRemaining);
         }
-
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
         model.addAttribute("schedules", schedules);
         model.addAttribute("ticketExistsMap", ticketExistsMap);
         model.addAttribute("spaceAvailableMap", spaceAvailableMap);
         model.addAttribute("timeRemainingMap", timeRemainingMap);
         List<Train> allTrains = trainServiceIMPL.consultTrains();
         List<Station> allStations = stationServiceIMPL.consultStations();
+        List<Schedule> allSchedules = scheduleServiceIMPL.consultSchedules();
         model.addAttribute("allTrains", allTrains);
         model.addAttribute("allStations", allStations);
+        model.addAttribute("allSchedules", allSchedules);
         return "schedules";
     }
 

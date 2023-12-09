@@ -46,7 +46,12 @@ public class TrainControl {
     }
 
     @GetMapping("/trains/search")
-    public String searchTrain(@RequestParam(value = "id_station", required = false) int idStation, @RequestParam(value = "id_station2", required = false) int idStation2, Model model, Authentication authentication) {
+    public String searchTrain(
+            @RequestParam(value = "id_station", required = false) Integer idStation,
+            @RequestParam(value = "id_station2", required = false) Integer idStation2,
+            Model model,
+            Authentication authentication
+    ) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<String> userRoles = authorities.stream()
@@ -54,17 +59,29 @@ public class TrainControl {
                 .collect(Collectors.toList());
         model.addAttribute("userRoles", userRoles);
 
-        String station = stationServiceIMPL.consultStation(idStation).getNameStation();
-        String station2 = stationServiceIMPL.consultStation(idStation2).getNameStation();
         List<Train> trains;
-
+        if (idStation != null && idStation2 != null) {
+            String station = stationServiceIMPL.consultStation(idStation).getNameStation();
+            String station2 = stationServiceIMPL.consultStation(idStation2).getNameStation();
             trains = this.trainServiceIMPL.findTrainsByStationNameAndDestination(station, station2);
+        } else if (idStation != null) {
+            String station = stationServiceIMPL.consultStation(idStation).getNameStation();
+            trains = this.trainServiceIMPL.findTrainsByStationName(station);
+        } else if (idStation2 != null) {
+            String station2 = stationServiceIMPL.consultStation(idStation2).getNameStation();
+            trains = this.trainServiceIMPL.findTrainsByStationDestination(station2);
+        } else {
+            trains = this.trainServiceIMPL.consultTrains();
+        }
 
         List<Station> allStations = stationServiceIMPL.consultStations();
+        List<Train> allTrains = trainServiceIMPL.consultTrains();
         model.addAttribute("allStations", allStations);
         model.addAttribute("trains", trains);
+        model.addAttribute("allTrains", allTrains);
         return "trains"; // Debes crear esta vista en Thymeleaf
     }
+
 
 
     @GetMapping("/trains/createTrain")
