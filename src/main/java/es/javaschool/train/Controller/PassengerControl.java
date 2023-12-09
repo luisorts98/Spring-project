@@ -1,6 +1,7 @@
 package es.javaschool.train.Controller;
 import es.javaschool.train.Entity.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,12 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+
+import java.util.Collection;
 import java.util.Date;
 import es.javaschool.train.Service.Impl.AdminServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -29,6 +33,14 @@ public class PassengerControl {
 
     @GetMapping("/passengers")
     public String consultPassenger(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            List<String> userRoles = authorities.stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            model.addAttribute("userRoles", userRoles);
         List<Passenger> passengers = this.passengerServiceIMPL.consultPassengers();
         List<Admin> allAdmins = this.adminServiceIMPL.consultAdmins();
         model.addAttribute("passengers",passengers);

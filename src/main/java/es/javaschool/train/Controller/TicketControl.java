@@ -3,6 +3,8 @@ package es.javaschool.train.Controller;
 import es.javaschool.train.Entity.Train;
 import org.springframework.beans.factory.annotation.Autowired;
 import es.javaschool.train.Entity.Ticket;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import es.javaschool.train.Service.Impl.TicketServiceImpl;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Service.Impl.PassengerServiceImpl;
@@ -18,6 +21,8 @@ import es.javaschool.train.Entity.Schedule;
 import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Entity.Admin;
 import java.util.Collections;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -43,12 +48,36 @@ public class TicketControl {
 
     @GetMapping("/tickets")
     public String consultTicket(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         List<Ticket> tickets = this.ticketServiceIMPL.consultTickets();
         List<Passenger> allPassengers = passengerServiceIMPL.consultPassengers();   // Supongamos que tienes un método para obtener todos los pasajeros
         List<Train> allTrains = ticketServiceImpl.consultTrains();
         model.addAttribute("tickets",tickets);
         model.addAttribute("allPassengers", allPassengers);
         model.addAttribute("allTrains", allTrains);
+        return "tickets";
+    }
+
+    @GetMapping("/tickets/search")
+    public String searchTicketsByPassengerName(@RequestParam("passengerName") String passengerName, Model model, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        List<Ticket> allTickets = this.ticketServiceIMPL.consultTickets();
+        model.addAttribute("allTickets", allTickets);
+        model.addAttribute("userRoles", userRoles);
+        List<Ticket> tickets = ticketServiceIMPL.searchTicketsByPassengerName(passengerName);
+        model.addAttribute("tickets", tickets);
         return "tickets";
     }
 
@@ -98,6 +127,32 @@ public class TicketControl {
         // Redirigir a la página de userTickets para mostrar los tickets del usuario
         return "redirect:/userTickets";
     }
+   /* @PostMapping("/schedules/search/{idSchedule}")
+    public String buyTicketSearch(@PathVariable int idSchedule, Authentication authentication, Model model, SessionStatus sessionStatus) {
+        String username = authentication.getName();
+        List<Admin> admins = adminService.findByNameList(username);
+
+
+        Passenger passenger = new Passenger();
+        passenger.setIdAdmin(admins.get(0));
+
+        passenger = passengerServiceIMPL.createAndUpdatePassenger(passenger);
+
+        // Obtener el Schedule
+        Train idTrain = scheduleService.getTrainIdByScheduleId(idSchedule);
+
+        // Crear un Ticket asociado al Passenger y al Schedule
+        Ticket ticket = new Ticket();
+        ticket.setIdPassengers(passenger);
+        ticket.setIdTrain(idTrain);
+        ticketServiceIMPL.createAndUpdateTicket(ticket);
+
+        sessionStatus.setComplete();
+
+        // Añadir ticketExists al modelo
+        // Redirigir a la página de userTickets para mostrar los tickets del usuario
+        return "redirect:/userTickets";
+    }*/
 
 
     @PostMapping("/tickets")
@@ -135,4 +190,12 @@ public class TicketControl {
         this.ticketServiceIMPL.deleteTicket(id);
         return "redirect:/tickets";
     }
+
+    @GetMapping("userTickets/{id}")
+    public String deleteTicketUser(@PathVariable int id){
+        this.ticketServiceIMPL.deleteTicket(id);
+        return "redirect:/userTickets";
+    }
+
+
 }

@@ -15,6 +15,7 @@ public interface TicketService {
     public Ticket consultTicket(int id);
     public void deleteTicket(int id);
 
+    public void deleteTicketUser(int id);
     public List<Ticket> getAllUserTickets(String username);
 
 

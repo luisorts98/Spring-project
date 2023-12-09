@@ -64,6 +64,10 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
+
+    public List<Ticket> searchTicketsByPassengerName(String passengerName) {
+        return ticketRepo.findByPassenger_Name(passengerName);
+    }
     private int getReservedSeatsForSchedule(int idSchedule) {
         Schedule schedule = scheduleRepo.findById(idSchedule);
 
@@ -100,6 +104,11 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(int Number) {
+        this.ticketRepo.deleteById(Number);
+    }
+
+    @Override
+    public void deleteTicketUser(int Number) {
         this.ticketRepo.deleteById(Number);
     }
 

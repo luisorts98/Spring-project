@@ -3,6 +3,8 @@ package es.javaschool.train.Controller;
 import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,7 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.security.core.Authentication;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -24,16 +30,40 @@ public class TrainControl {
     @Autowired
     private StationServiceImpl stationServiceIMPL;
     @GetMapping("/trains")
-    public String consultTrain(Model model) {
+    public String consultTrain(Model model, Authentication authentication) {
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         List<Train> trains = this.trainServiceIMPL.consultTrains();
         List<Station> allStations = stationServiceIMPL.consultStations();// Supongamos que tienes un método para obtener todos los pasajeros
         model.addAttribute("trains", trains);
         model.addAttribute("allStations", allStations);
         return "trains"; // Debes crear esta vista en Thymeleaf
     }
-    @GetMapping("/trainSearch")
-    public String trainSearchPage() {
-        return "trainSearch";
+
+    @GetMapping("/trains/search")
+    public String searchTrain(@RequestParam(value = "id_station", required = false) int idStation, @RequestParam(value = "id_station2", required = false) int idStation2, Model model, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
+
+        String station = stationServiceIMPL.consultStation(idStation).getNameStation();
+        String station2 = stationServiceIMPL.consultStation(idStation2).getNameStation();
+        List<Train> trains;
+
+            trains = this.trainServiceIMPL.findTrainsByStationNameAndDestination(station, station2);
+
+        List<Station> allStations = stationServiceIMPL.consultStations();
+        model.addAttribute("allStations", allStations);
+        model.addAttribute("trains", trains);
+        return "trains"; // Debes crear esta vista en Thymeleaf
     }
 
 

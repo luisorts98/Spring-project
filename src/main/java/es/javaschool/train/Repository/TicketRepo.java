@@ -1,9 +1,12 @@
 package es.javaschool.train.Repository;
 
+import es.javaschool.train.Entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import es.javaschool.train.Entity.Ticket;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface TicketRepo extends JpaRepository<Ticket,Integer>{
 
@@ -19,4 +22,8 @@ public interface TicketRepo extends JpaRepository<Ticket,Integer>{
 
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.idTrain.idTrain = :idTrain")
     int countByTrain_IdTrain(int idTrain);
+
+
+    @Query("SELECT t FROM Ticket t WHERE t.idPassengers.admin.name LIKE %:passengerName%")
+    List<Ticket> findByPassenger_Name(@Param("passengerName") String passengerName);
 }

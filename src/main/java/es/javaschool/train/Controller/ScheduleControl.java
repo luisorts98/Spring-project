@@ -3,6 +3,7 @@ package es.javaschool.train.Controller;
 import es.javaschool.train.Entity.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.time.Duration;
@@ -20,6 +23,8 @@ import java.time.LocalDateTime;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/")
 @SessionAttributes("ticketExists")
@@ -38,6 +43,14 @@ public class ScheduleControl {
 
     @GetMapping("/schedules")
     public String consultSchedule(Model model, Authentication authentication){
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         String username = authentication.getName();
         List<Schedule> schedules = this.scheduleServiceIMPL.consultSchedules();
         Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
@@ -69,6 +82,7 @@ public class ScheduleControl {
 
         return "schedules";
     }
+
 
 
     @GetMapping("/schedules/createSchedule")
@@ -136,7 +150,7 @@ public class ScheduleControl {
             @RequestParam(name = "originName", required = false) String originName,
             @RequestParam(name = "destinationName", required = false) String destinationName,
             @RequestParam(name = "date", required = false) String dateString,
-            Model model
+            Model model,  Authentication authentication
     ) {
         List<Schedule> schedules;
 
@@ -159,8 +173,26 @@ public class ScheduleControl {
             // Lógica para otros casos o mostrar todos los horarios si no se proporciona ningún parámetro de búsqueda
             schedules = scheduleServiceIMPL.consultSchedules();
         }
+        String username = authentication.getName(); // Add a method to get the username
+        Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
+        Map<Integer, Boolean> spaceAvailableMap = new HashMap<>();
+        Map<Integer, Duration> timeRemainingMap = new HashMap<>();
+        for (Schedule schedule : schedules) {
+            int idSchedule = schedule.getIdSchedule();
+            boolean ticketExists = ticketServiceIMPL.hasTicketForUserAndTrain(username, idSchedule);
+            ticketExistsMap.put(idSchedule, ticketExists);
+            boolean spaceAvailable = ticketServiceIMPL.isSpaceAvailable(idSchedule);
+            spaceAvailableMap.put(idSchedule, spaceAvailable);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime departureTime = schedule.getTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime();
+            Duration timeRemaining = Duration.between(now, departureTime);
+            timeRemainingMap.put(idSchedule, timeRemaining);
+        }
 
         model.addAttribute("schedules", schedules);
+        model.addAttribute("ticketExistsMap", ticketExistsMap);
+        model.addAttribute("spaceAvailableMap", spaceAvailableMap);
+        model.addAttribute("timeRemainingMap", timeRemainingMap);
         List<Train> allTrains = trainServiceIMPL.consultTrains();
         List<Station> allStations = stationServiceIMPL.consultStations();
         model.addAttribute("allTrains", allTrains);
