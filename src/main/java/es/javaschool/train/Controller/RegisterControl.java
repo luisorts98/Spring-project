@@ -1,7 +1,9 @@
 package es.javaschool.train.Controller;
 
+import es.javaschool.train.Entity.Schedule;
 import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
+import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RegisterControl {
     @Autowired
     private StationServiceImpl stationService;
+
+    @Autowired
+    private ScheduleServiceImpl scheduleService;
     @GetMapping("/login")
     public String login(Model model, RedirectAttributes redirectAttributes) {
         // Obtén la autenticación actual
@@ -52,7 +57,9 @@ public class RegisterControl {
         // Obtén la autenticación actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Station> allStations = stationService.consultStations();
+        List<Schedule> schedules = scheduleService.consultSchedules();
         model.addAttribute("allStations", allStations);
+        model.addAttribute("schedules", schedules);
         // Verifica si el usuario está autenticado
         if (authentication != null && authentication.isAuthenticated()) {
             // Obtén los roles del usuario autenticado
