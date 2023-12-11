@@ -90,7 +90,7 @@ public class PassengerControl {
         return "redirect:/passengers";
    }
 
-    @GetMapping("/passengers/edit/{id_passenger}")
+    @GetMapping("/{id_passenger}")
     public String modifyPassengerForm(@PathVariable("id_passenger") int id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -108,10 +108,11 @@ public class PassengerControl {
     }
 
     @PostMapping("/passengers/{id_passenger}")
-    public String modifyPassenger(@PathVariable("id_passenger") int id, @RequestParam("idAdmin") int id2, @ModelAttribute("passenger") Passenger passenger, Model model){
+    public String modifyPassenger(@PathVariable("id_passenger") int id, @ModelAttribute("passenger") Passenger passenger, @RequestParam("idAdmin") int id2, Model model){
         Passenger passengerModify = this.passengerServiceIMPL.consultPassenger(id);
         passengerModify.setIdPassenger(id);
-        passengerModify.setIdAdmin(this.adminServiceIMPL.consultAdmin(id2));
+        Admin admin = this.adminServiceIMPL.consultAdmin(id2);
+        passengerModify.setIdAdmin(admin);
         this.passengerServiceIMPL.modifyPassenger(passengerModify);
         return "redirect:/passengers";
     }

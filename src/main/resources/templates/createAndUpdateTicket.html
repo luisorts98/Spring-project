@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="/static/train-16.png">
+
 
     <style>
         body {
@@ -96,7 +98,7 @@
             <div class="card-body">
                 <form th:action="@{/tickets}" th:object="${ticket}" method="POST">
                     <div class="form-group mb-3">
-                        <label class="fw-bold">IdPassenger:</label>
+                        <label class="fw-bold"><strong>Passenger:</strong></label>
                         <select name="id_passenger" id="id_passenger" class="form-control form-control-lg" required>
                             <option value="">Select</option>
                             <option th:each="passenger : ${allPassengers}" th:value="${passenger.idPassenger}" th:text="${passenger.idAdmin.name}">
@@ -104,7 +106,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label class="fw-bold" for="id_train">Train:</label>
+                        <label class="fw-bold" for="id_train"><strong>Train:</strong></label>
                         <select id="id_train" name="id_train" class="form-control form-control-lg" required>
                             <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.nameStationOrigin}"></option>
                         </select>

@@ -83,7 +83,7 @@ public class AdminServiceImpl implements AdminService {
                 adminRegi.getName(),
                 adminRegi.getSurname(),
                 adminRegi.getDateOfBirth(),
-                Arrays.asList(new Rol("ADMIN")));
+                Arrays.asList(new Rol("USER")));
 
         return adminRepo.save(admin);
     }

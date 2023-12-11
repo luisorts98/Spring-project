@@ -97,8 +97,16 @@ public class StationControl {
 
 
 
-    @GetMapping("/stations/edit/{id}")
+    @GetMapping("/edit2/{id}")
     public String modifyStationForm(@PathVariable int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         Station station = this.stationServiceIMPL.consultStation(id);
         model.addAttribute("station", station);
         return "editStation"; // Debes crear esta vista en Thymeleaf

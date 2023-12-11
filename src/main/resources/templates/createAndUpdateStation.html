@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="/static/train-16.png">
+
     <style>
         body {
             padding-top: 100px; /* Ajusta el espacio para la barra de navegación */
@@ -95,7 +97,7 @@
             <div class="card-body">
                 <form th:action="@{/stations}" th:object="${station}" method="POST">
                     <div class="form-group mb-3">
-                        <label style="margin-bottom: 10px;">Station name:</label>
+                        <label style="margin-bottom: 10px;"><strong>Station name:</strong></label>
                         <br>
                         <input type="text" name="nameStation" th:field="*{nameStation}" class="form-control" style="width: 100%; margin-top: 5px;" placeholder="Diga el nombre de la estación" required>
                     </div>

@@ -83,6 +83,14 @@ public class TicketControl {
 
     @GetMapping("/userTickets")
     public String userTickets(Model model, Principal principal) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         String username = principal.getName();
 
         // Obtener todos los tickets asociados al usuario actual
@@ -173,7 +181,7 @@ public class TicketControl {
         return "redirect:/tickets";
     }
 
-    @GetMapping("/tickets/edit/{id}")
+    @GetMapping("/edit3/{id}")
     public String modifyTicketForm(@PathVariable int id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -203,13 +211,17 @@ public class TicketControl {
 
     @GetMapping("tickets/{id}")
     public String deleteTicket(@PathVariable int id){
+        int passenger = this.ticketServiceIMPL.consultTicket(id).getIdPassengers().getIdPassenger();
         this.ticketServiceIMPL.deleteTicket(id);
+        this.passengerServiceIMPL.deletePassenger(passenger);
         return "redirect:/tickets";
     }
 
     @GetMapping("userTickets/{id}")
     public String deleteTicketUser(@PathVariable int id){
+        int passenger = this.ticketServiceIMPL.consultTicket(id).getIdPassengers().getIdPassenger();
         this.ticketServiceIMPL.deleteTicket(id);
+        this.passengerServiceIMPL.deletePassenger(passenger);
         return "redirect:/userTickets";
     }
 

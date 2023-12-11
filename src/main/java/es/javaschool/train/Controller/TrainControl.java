@@ -114,8 +114,14 @@ public class TrainControl {
     }
 
 
-    @GetMapping("/trains/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String modifyTrainForm(@PathVariable int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
         Train train = this.trainServiceIMPL.consultTrain(id);
         List<Station> stations = stationServiceIMPL.consultStations();
         model.addAttribute("allStations", stations);

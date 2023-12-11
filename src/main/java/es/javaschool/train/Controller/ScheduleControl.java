@@ -139,8 +139,16 @@ public class ScheduleControl {
         return "redirect:/schedules";
     }
 
-    @GetMapping("/schedules/edit/{id}")
+    @GetMapping("/edit4/{id}")
     public String modifyScheduleForm(@PathVariable int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         Schedule schedule = this.scheduleServiceIMPL.consultSchedule(id);
         model.addAttribute("schedule", schedule);
         List<Train> trains = trainServiceIMPL.consultTrains();
