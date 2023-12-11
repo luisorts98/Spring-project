@@ -48,6 +48,7 @@ public class Passenger {
     public void setIdAdmin(Admin admin) {
         this.admin = admin;
     }
+
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }

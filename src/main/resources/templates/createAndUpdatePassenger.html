@@ -26,7 +26,7 @@
                 <form th:action="@{/passengers}" th:object="${passenger}" method="POST">
                     <div class="form-group">
                         <label>name : </label>
-                        <input type="text" name="name" th:field="*{name}" class="from-control" placeholder="Name of the passenger " required>
+                        <input type="text" name="name" th:field="*{idPassenger}" class="from-control" placeholder="Name of the passenger " required>
                     </div>
                     <br>
                     <div class="form-group">

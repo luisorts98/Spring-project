@@ -45,7 +45,7 @@ public class TrainControl {
         return "trains"; // Debes crear esta vista en Thymeleaf
     }
 
-    @GetMapping("/trains/search")
+    @GetMapping("/search4")
     public String searchTrain(
             @RequestParam(value = "id_station", required = false) Integer idStation,
             @RequestParam(value = "id_station2", required = false) Integer idStation2,
@@ -84,15 +84,27 @@ public class TrainControl {
 
 
 
-    @GetMapping("/trains/createTrain")
-    public String createAndUpdateTrainForm(Model model) {
+    @GetMapping("/createTrain")
+    public String createAndUpdateTrainForm(Model model, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
         List<Station> stations = stationServiceIMPL.consultStations();
         model.addAttribute("allStations", stations);
         model.addAttribute("train", new Train());
         return "createAndUpdateTrain"; // Debes crear esta vista en Thymeleaf
     }
     @PostMapping("/trains")
-    public String createAndUpdateTrain(@RequestParam(value = "id_station") int idStation, @RequestParam(value = "id_station2") int idStation2, @ModelAttribute("train") Train train, Model model) {
+    public String createAndUpdateTrain(@RequestParam(value = "id_station") int idStation, @RequestParam(value = "id_station2") int idStation2, @ModelAttribute("train") Train train, Model model, Authentication authentication) {
+        authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        model.addAttribute("userRoles", userRoles);
         Station station = stationServiceIMPL.consultStation(idStation);
         Station station2 = stationServiceIMPL.consultStation(idStation2);
         train.setStationOrigin(station2);

@@ -32,6 +32,10 @@
 
 
             }
+            .navbar-brand img {
+                width: 35px; /* Ajusta el ancho de la imagen según tus necesidades */
+                height: auto; /* Mantiene la proporción de la imagen */
+            }
             .navbar-brand {
                 margin-right: 10px;
                 margin-left: 10px;
@@ -75,7 +79,9 @@
                 <!-- Agrega más enlaces aquí según tus necesidades -->
             </ul>
         <div class="navbar-brand-container d-flex mx-auto">
-            <a class="navbar-brand ml-4" href="#" th:href="@{/}" style="font-weight: bold; color: pink;">RAIL-APP</a>
+            <a class="navbar-brand ml-4" href="#" th:href="@{/}">
+                <img src="/static/logoCasa.png" alt="RAIL-APP Logo">
+            </a>
         </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

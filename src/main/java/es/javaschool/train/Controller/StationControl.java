@@ -44,8 +44,16 @@ public class StationControl {
         return "stations"; // Debes crear esta vista en Thymeleaf
     }
 
-    @GetMapping("/stations/createStation")
+    @GetMapping("/createStation")
     public String createAndUpdateStationForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         model.addAttribute("station", new Station());
         return "createAndUpdateStation"; // Debes crear esta vista en Thymeleaf
     }
@@ -62,7 +70,7 @@ public class StationControl {
         return ResponseEntity.status(HttpStatus.CREATED).body(stationModify);
     }*/
 
-    @GetMapping("/stations/search")
+    @GetMapping("/search3")
     public String searchStation(@RequestParam(value = "name") String nameStation, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

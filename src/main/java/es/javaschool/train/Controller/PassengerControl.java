@@ -48,7 +48,7 @@ public class PassengerControl {
         return "passengers";
     }
 
-    @GetMapping("/passengers/search")
+    @GetMapping("/search2")
     public String searchPassenger(@RequestParam(value = "name") String name, Model model, Authentication authentication  ){
         authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -65,8 +65,16 @@ public class PassengerControl {
         return "passengers";
     }
 
-    @GetMapping("/passengers/createPassenger")
+    @GetMapping("/createPassenger")
     public String createAndUpdatePassengerForm(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         List<Admin> admins = this.adminServiceIMPL.consultAdmins();
         model.addAttribute("allAdmins", admins);
         model.addAttribute("passenger",  new Passenger());
@@ -84,15 +92,26 @@ public class PassengerControl {
 
     @GetMapping("/passengers/edit/{id_passenger}")
     public String modifyPassengerForm(@PathVariable("id_passenger") int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         Passenger passenger = this.passengerServiceIMPL.consultPassenger(id);
+        List<Admin> admins = this.adminServiceIMPL.consultAdmins();
         model.addAttribute("passenger", passenger);
+        model.addAttribute("allAdmins", admins);
         return "editPassenger";
     }
 
     @PostMapping("/passengers/{id_passenger}")
-    public String modifyPassenger(@PathVariable("id_passenger") int id, @ModelAttribute("passenger") Passenger passenger, Model model){
+    public String modifyPassenger(@PathVariable("id_passenger") int id, @RequestParam("idAdmin") int id2, @ModelAttribute("passenger") Passenger passenger, Model model){
         Passenger passengerModify = this.passengerServiceIMPL.consultPassenger(id);
         passengerModify.setIdPassenger(id);
+        passengerModify.setIdAdmin(this.adminServiceIMPL.consultAdmin(id2));
         this.passengerServiceIMPL.modifyPassenger(passengerModify);
         return "redirect:/passengers";
     }

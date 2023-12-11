@@ -111,8 +111,16 @@ public class ScheduleControl {
 
 
 
-    @GetMapping("/schedules/createSchedule")
+    @GetMapping("/createSchedule")
     public String createAndUpdateScheduleForm(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         List<Train> trains = trainServiceIMPL.consultTrains();
         List<Station> stations = stationServiceIMPL.consultStations();
         Schedule schedule = new Schedule();

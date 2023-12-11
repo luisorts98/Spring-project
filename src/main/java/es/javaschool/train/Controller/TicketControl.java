@@ -65,7 +65,7 @@ public class TicketControl {
         return "tickets";
     }
 
-    @GetMapping("/tickets/search")
+    @GetMapping("/search")
     public String searchTicketsByPassengerName(@RequestParam("passengerName") String passengerName, Model model, Authentication authentication) {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -91,8 +91,16 @@ public class TicketControl {
         model.addAttribute("userTickets", userTickets);
         return "userTickets";
     }
-    @GetMapping("/tickets/createTicket")
+    @GetMapping("/createTicket")
     public String createAndUpdateTicketForm(Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
         List<Train> trains = ticketServiceImpl.consultTrains();
         Ticket ticket = new Ticket();
@@ -167,6 +175,14 @@ public class TicketControl {
 
     @GetMapping("/tickets/edit/{id}")
     public String modifyTicketForm(@PathVariable int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Pasa los roles al modelo
+        model.addAttribute("userRoles", userRoles);
         Ticket ticket = this.ticketServiceIMPL.consultTicket(id);
         model.addAttribute("ticket", ticket);
         List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
