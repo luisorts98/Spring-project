@@ -8,10 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
 import es.javaschool.train.Service.Impl.StationServiceImpl;
@@ -52,26 +49,19 @@ public class ScheduleControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
         model.addAttribute("userRoles", userRoles);
         List<Schedule> schedules;
         if ((originName != null || destinationName != null) && dateString != null) {
-            // Lógica para buscar por estación de origen, estación de destino y fecha
             schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestinationAndDate(originName, destinationName, dateString);
         } else if (originName != null && destinationName != null) {
-            // Lógica para buscar por estación de origen y estación de destino
             schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestination(originName, destinationName);
         } else if (dateString != null) {
-            // Lógica para buscar por fecha
             schedules = scheduleServiceIMPL.findSchedulesByDate(dateString);
         } else if (originName != null) {
-            // Lógica para buscar por estación de origen
             schedules = scheduleServiceIMPL.findSchedulesByOriginStation(originName);
         } else if (destinationName != null) {
-            // Lógica para buscar por estación de destino
             schedules = scheduleServiceIMPL.findSchedulesByDestinationStation(destinationName);
         } else {
-            // Mostrar todos los horarios si no se proporcionan parámetros de búsqueda válidos
             schedules = scheduleServiceIMPL.consultSchedules();
         }
         String username = authentication.getName();
@@ -119,7 +109,6 @@ public class ScheduleControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
         model.addAttribute("userRoles", userRoles);
         List<Train> trains = trainServiceIMPL.consultTrains();
         List<Station> stations = stationServiceIMPL.consultStations();
@@ -147,7 +136,6 @@ public class ScheduleControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
         model.addAttribute("userRoles", userRoles);
         Schedule schedule = this.scheduleServiceIMPL.consultSchedule(id);
         model.addAttribute("schedule", schedule);
@@ -170,23 +158,7 @@ public class ScheduleControl {
         }
         return "redirect:/schedules";
     }
-    /*@GetMapping("/index")
-    public String index(Model model) {
-        System.out.println("Index method called");
-        // Obtener todas las estaciones y agregarlas al modelo
-        List<Station> allStations = stationServiceIMPL.consultStations();
-        System.out.println("Number of Stations: " + allStations.size());
-        List<Schedule> schedules;
-        schedules = scheduleServiceIMPL.consultSchedules();
-        List<Train> allTrains = trainServiceIMPL.consultTrains();
-        model.addAttribute("allTrains", allTrains);
-        model.addAttribute("allStations", allStations);
-        model.addAttribute("schedules", schedules);
 
-        // Otros atributos necesarios para la vista...
-
-        return "index"; // Nombre de tu vista index.html
-    }*/
     @GetMapping("/schedules/search")
     public String searchSchedules(
             @RequestParam(name = "originName", required = false) String originName,
@@ -197,25 +169,19 @@ public class ScheduleControl {
         List<Schedule> schedules;
 
         if ((originName != null || destinationName != null) && dateString != null) {
-            // Lógica para buscar por estación de origen, estación de destino y fecha
             schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestinationAndDate(originName, destinationName, dateString);
         } else if (originName != null && destinationName != null) {
-            // Lógica para buscar por estación de origen y estación de destino
             schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestination(originName, destinationName);
         } else if (dateString != null) {
-            // Lógica para buscar por fecha
             schedules = scheduleServiceIMPL.findSchedulesByDate(dateString);
         } else if (originName != null) {
-            // Lógica para buscar por estación de origen
             schedules = scheduleServiceIMPL.findSchedulesByOriginStation(originName);
         } else if (destinationName != null) {
-            // Lógica para buscar por estación de destino
             schedules = scheduleServiceIMPL.findSchedulesByDestinationStation(destinationName);
         } else {
-            // Lógica para otros casos o mostrar todos los horarios si no se proporciona ningún parámetro de búsqueda
             schedules = scheduleServiceIMPL.consultSchedules();
         }
-        String username = authentication.getName(); // Add a method to get the username
+        String username = authentication.getName();
         Map<Integer, Boolean> ticketExistsMap = new HashMap<>();
         Map<Integer, Boolean> spaceAvailableMap = new HashMap<>();
         Map<Integer, Duration> timeRemainingMap = new HashMap<>();

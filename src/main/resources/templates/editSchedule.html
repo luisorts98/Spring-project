@@ -106,18 +106,18 @@
                         </select>
                         <br>
                         <div class="form-group mb-3">
-                        <label><strong>Train:</strong></label>
-                        <select name="idTrain" id="id_train" class="form-control" required>
-                            <option value=""> Select </option>
-                            <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.idTrain}">
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label><strong>Time:</strong></label>
-                        <br>
-                        <input type="datetime-local" name="time" th:field="*{time}" class="from-control"  required>
-                    </div>
+                            <label><strong>Train:</strong></label>
+                            <select name="idTrain" id="id_train" class="form-control" required>
+                                <option value=""> Select </option>
+                                <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.idTrain}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label><strong>Time:</strong></label>
+                            <br>
+                            <input type="datetime-local" name="time" th:field="*{time}" class="from-control"  required>
+                        </div>
                     </div>
                     <div class="box-footer">
                         <br>

@@ -7,11 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Entity.Train;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.security.core.Authentication;
@@ -36,13 +33,13 @@ public class TrainControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
+
         model.addAttribute("userRoles", userRoles);
         List<Train> trains = this.trainServiceIMPL.consultTrains();
-        List<Station> allStations = stationServiceIMPL.consultStations();// Supongamos que tienes un método para obtener todos los pasajeros
+        List<Station> allStations = stationServiceIMPL.consultStations();
         model.addAttribute("trains", trains);
         model.addAttribute("allStations", allStations);
-        return "trains"; // Debes crear esta vista en Thymeleaf
+        return "trains";
     }
 
     @GetMapping("/search4")
@@ -79,7 +76,7 @@ public class TrainControl {
         model.addAttribute("allStations", allStations);
         model.addAttribute("trains", trains);
         model.addAttribute("allTrains", allTrains);
-        return "trains"; // Debes crear esta vista en Thymeleaf
+        return "trains";
     }
 
 
@@ -95,7 +92,7 @@ public class TrainControl {
         List<Station> stations = stationServiceIMPL.consultStations();
         model.addAttribute("allStations", stations);
         model.addAttribute("train", new Train());
-        return "createAndUpdateTrain"; // Debes crear esta vista en Thymeleaf
+        return "createAndUpdateTrain";
     }
     @PostMapping("/trains")
     public String createAndUpdateTrain(@RequestParam(value = "id_station") int idStation, @RequestParam(value = "id_station2") int idStation2, @ModelAttribute("train") Train train, Model model, Authentication authentication) {
@@ -126,7 +123,7 @@ public class TrainControl {
         List<Station> stations = stationServiceIMPL.consultStations();
         model.addAttribute("allStations", stations);
         model.addAttribute("train", train);
-        return "editTrain"; // Debes crear esta vista en Thymeleaf
+        return "editTrain";
     }
     @PostMapping("/trains/{id}")
     public String modifyTrain(@PathVariable int id, @ModelAttribute("train") Train train, @RequestParam("idStation") int idPassenger, @RequestParam(value = "idStation2") int idStation2,Model model) {
@@ -145,11 +142,6 @@ public class TrainControl {
         this.trainServiceIMPL.deleteTrain(id);
         return "redirect:/trains";
     }
-   /* @DeleteMapping
-    @RequestMapping(value = "DeleteTrain/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<?> DeleteTrain(@PathVariable int id) {
-        trainServiceIMPL.deleteTrain(id);
-        return ResponseEntity.ok().build();
-    }*/
+
 
 }

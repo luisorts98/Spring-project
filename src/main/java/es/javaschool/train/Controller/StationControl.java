@@ -41,7 +41,7 @@ public class StationControl {
         model.addAttribute("userRoles", userRoles);
         List<Station> stations = this.stationServiceIMPL.consultStations();
         model.addAttribute("stations", stations);
-        return "stations"; // Debes crear esta vista en Thymeleaf
+        return "stations";
     }
 
     @GetMapping("/createStation")
@@ -52,10 +52,10 @@ public class StationControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
+
         model.addAttribute("userRoles", userRoles);
         model.addAttribute("station", new Station());
-        return "createAndUpdateStation"; // Debes crear esta vista en Thymeleaf
+        return "createAndUpdateStation";
     }
 
     @PostMapping("/stations")
@@ -63,12 +63,6 @@ public class StationControl {
         this.stationServiceIMPL.createAndUpdateStation(station);
         return "redirect:/stations";
     }
-    /*@PutMapping
-    @RequestMapping(value = "modifyStation", method = RequestMethod.PUT)
-    public ResponseEntity<?> modifyStation(@RequestBody Station station){
-        Station stationModify = stationServiceIMPL.modifyStation(station);
-        return ResponseEntity.status(HttpStatus.CREATED).body(stationModify);
-    }*/
 
     @GetMapping("/search3")
     public String searchStation(@RequestParam(value = "name") String nameStation, Model model) {
@@ -92,7 +86,7 @@ public class StationControl {
             model.addAttribute("noResults", false);
         }
 
-        return "stations"; // Debes crear esta vista en Thymeleaf
+        return "stations";
     }
 
 

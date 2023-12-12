@@ -29,12 +29,12 @@ public class Admin {
     private Date dateOfBirth;
 
 
-@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-@JoinTable(
-        name = "admin_roles",
-        joinColumns = @JoinColumn(name = "admin_id",referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
-)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "admin_roles",
+            joinColumns = @JoinColumn(name = "admin_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id")
+    )
     private Collection<Rol> roles;
 
     public Admin(int id, String email, String password, String name, String surname, Date dateOfBirth , Collection<Rol> roles) {

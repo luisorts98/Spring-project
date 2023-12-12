@@ -6,18 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import es.javaschool.train.Repository.ScheduleRepo;
 import es.javaschool.train.Entity.Schedule;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-import es.javaschool.train.Entity.Station;
 import es.javaschool.train.Repository.StationRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
-import java.util.Calendar;
-import java.util.ArrayList;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -48,7 +44,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         if (originStationName != null && destinationStationName != null) {
             if (dateString != null && !dateString.isEmpty()) {
-                // Si se proporciona una fecha, conviértela a Date
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     Date date = dateFormat.parse(dateString);
@@ -60,7 +55,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                     return Collections.emptyList();
                 }
             } else {
-                // Si no se proporciona una fecha, busca sin considerar la fecha
                 List<Schedule> schedules = scheduleRepo.findByStationNameAndStationDestination(originStationName, destinationStationName);
                 log.info("Found {} schedules", schedules.size());
                 return schedules;
@@ -90,7 +84,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         log.info("Searching schedules for date: {}", dateString);
 
         if (dateString != null) {
-            // Convierte el String de fecha a Date
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 Date date = dateFormat.parse(dateString);
@@ -134,7 +127,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
 
-    // Otros métodos del servicio
 
     public Train getTrainIdByScheduleId(int idSchedule) {
         Schedule schedule = scheduleRepo.findById(idSchedule).get();

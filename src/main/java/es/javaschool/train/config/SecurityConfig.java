@@ -39,22 +39,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         auth.authenticationProvider(authenticationProvider());
     }
 
-            @Override
-            public void configure(HttpSecurity http) throws Exception {
-                http.authorizeRequests()
-                        .antMatchers("/register**","/js/**","/css/**","/img/**", "/static/**").permitAll()
-                        .anyRequest().authenticated()
-                        .and().formLogin()
-                                .loginPage("/login")
-                        .defaultSuccessUrl("/",true)
-                                .permitAll()
-                        .and()
-                        .logout()
-                        .invalidateHttpSession(true).clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout").permitAll();
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/register**","/js/**","/css/**","/img/**", "/static/**").permitAll()
+                .anyRequest().authenticated()
+                .and().formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/",true)
+                .permitAll()
+                .and()
+                .logout()
+                .invalidateHttpSession(true).clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout").permitAll();
 
-            }
-        }
+    }
+}
 
 

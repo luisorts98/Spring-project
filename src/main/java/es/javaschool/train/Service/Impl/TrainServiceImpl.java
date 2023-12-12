@@ -34,7 +34,7 @@ public class TrainServiceImpl implements TrainService{
         return this.trainRepo.findByStationName(originStationName);
     }
 
-   public List<Train> findTrainsByStationDestination(String destinationStationName) {
+    public List<Train> findTrainsByStationDestination(String destinationStationName) {
         return this.trainRepo.findByStationDestination(destinationStationName);
     }
     @Override

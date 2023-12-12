@@ -105,12 +105,12 @@
                         </select>
                         <br>
                         <div class="form-group mb-3">
-                        <label><strong>Train:</strong></label>
-                        <select name="id_train" id="id_train" class="form-control" required>
-                            <option value=""> Select </option>
-                            <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.nameStationOrigin}">
-                            </option>
-                        </select>
+                            <label><strong>Train:</strong></label>
+                            <select name="id_train" id="id_train" class="form-control" required>
+                                <option value=""> Select </option>
+                                <option th:each="train : ${allTrains}" th:value="${train.idTrain}" th:text="${train.nameStationOrigin}">
+                                </option>
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label>Time : </label>

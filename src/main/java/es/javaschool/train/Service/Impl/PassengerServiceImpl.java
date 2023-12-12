@@ -25,7 +25,7 @@ public class PassengerServiceImpl implements PassengerService{
         return this.passengerRepo.save(passenger);
     }
 
-   public List<Passenger>  searchPassenger(String name){
+    public List<Passenger>  searchPassenger(String name){
         return this.passengerRepo.findByAdmin_Username(name);
     }
 

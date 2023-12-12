@@ -29,7 +29,6 @@ public class TrainSearchController {
                                        @RequestParam(name = "destinationStation") String destinationStation,
                                        Model model) {
 
-        // Lógica para buscar trenes según los parámetros proporcionados
         List<Schedule> schedules = scheduleServiceIMPL.findSchedulesByStationNameAndDestination(originStation, destinationStation);
 
         model.addAttribute("schedules", schedules);

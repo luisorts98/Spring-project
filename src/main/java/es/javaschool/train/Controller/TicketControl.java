@@ -17,10 +17,8 @@ import java.util.List;
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Service.Impl.PassengerServiceImpl;
 import es.javaschool.train.Service.Impl.TrainServiceImpl;
-import es.javaschool.train.Entity.Schedule;
 import es.javaschool.train.Service.Impl.ScheduleServiceImpl;
 import es.javaschool.train.Entity.Admin;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -32,9 +30,9 @@ public class TicketControl {
     @Autowired
     private TicketServiceImpl ticketServiceIMPL;
 
-   @Autowired
+    @Autowired
     private PassengerServiceImpl passengerServiceIMPL;
-   @Autowired
+    @Autowired
     private TrainServiceImpl ticketServiceImpl;
 
     @Autowired
@@ -107,7 +105,6 @@ public class TicketControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
         model.addAttribute("userRoles", userRoles);
         List<Passenger> passengers = passengerServiceIMPL.consultPassengers();
         List<Train> trains = ticketServiceImpl.consultTrains();
@@ -128,10 +125,8 @@ public class TicketControl {
 
         passenger = passengerServiceIMPL.createAndUpdatePassenger(passenger);
 
-        // Obtener el Schedule
         Train idTrain = scheduleService.getTrainIdByScheduleId(idSchedule);
 
-        // Crear un Ticket asociado al Passenger y al Schedule
         Ticket ticket = new Ticket();
         ticket.setIdPassengers(passenger);
         ticket.setIdTrain(idTrain);
@@ -139,37 +134,9 @@ public class TicketControl {
 
         sessionStatus.setComplete();
 
-        // Añadir ticketExists al modelo
-        // Redirigir a la página de userTickets para mostrar los tickets del usuario
+
         return "redirect:/userTickets";
     }
-   /* @PostMapping("/schedules/search/{idSchedule}")
-    public String buyTicketSearch(@PathVariable int idSchedule, Authentication authentication, Model model, SessionStatus sessionStatus) {
-        String username = authentication.getName();
-        List<Admin> admins = adminService.findByNameList(username);
-
-
-        Passenger passenger = new Passenger();
-        passenger.setIdAdmin(admins.get(0));
-
-        passenger = passengerServiceIMPL.createAndUpdatePassenger(passenger);
-
-        // Obtener el Schedule
-        Train idTrain = scheduleService.getTrainIdByScheduleId(idSchedule);
-
-        // Crear un Ticket asociado al Passenger y al Schedule
-        Ticket ticket = new Ticket();
-        ticket.setIdPassengers(passenger);
-        ticket.setIdTrain(idTrain);
-        ticketServiceIMPL.createAndUpdateTicket(ticket);
-
-        sessionStatus.setComplete();
-
-        // Añadir ticketExists al modelo
-        // Redirigir a la página de userTickets para mostrar los tickets del usuario
-        return "redirect:/userTickets";
-    }*/
-
 
     @PostMapping("/tickets")
     public String createAndUpdateTicket(@RequestParam(value="id_passenger") int idPassenger, @RequestParam(value ="id_train") int idTrain, @ModelAttribute("ticket") Ticket ticket){

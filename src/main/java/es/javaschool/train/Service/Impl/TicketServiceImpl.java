@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import es.javaschool.train.Service.TicketService;
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Entity.Schedule;
-import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import es.javaschool.train.Entity.Train;
@@ -77,22 +76,20 @@ public class TicketServiceImpl implements TicketService {
             if (train != null) {
                 return ticketRepo.countByTrain_IdTrain(train.getIdTrain());
             } else {
-                return 0; // O el valor predeterminado que desees si el tren es nulo
+                return 0;
             }
         } else {
-            return 0; // O el valor predeterminado que desees si el horario es nulo
+            return 0;
         }
     }
     public int getNumberOfTicketsForTrain(int idTrain) {
         return ticketRepo.countByTrain_IdTrain(idTrain);
     }
     public boolean hasTicketForUser(String username) {
-        // Lógica para verificar si el usuario ya tiene un billete
         return ticketRepo.existsByUser(username);
     }
 
     public boolean hasTicketForUserAndTrain(String username, int idSchedule) {
-        // Lógica para verificar si el usuario ya tiene un billete para otro horario con el mismo tren
         return ticketRepo.existsByUserAndTrain(username, idSchedule);
     }
 

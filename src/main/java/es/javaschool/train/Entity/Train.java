@@ -76,7 +76,6 @@ public class Train {
     public Station getStationOrigin() {
         return stationOrigin;
     }
-    // Update this method to handle null stationOrigin
 
     public String getNameStationDestination() {
         return (stationDestination != null) ? stationDestination.getNameStation() : null;

@@ -1,7 +1,5 @@
 package es.javaschool.train.Entity;
-import javax.persistence.*; //import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
-import java.util.Date;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity

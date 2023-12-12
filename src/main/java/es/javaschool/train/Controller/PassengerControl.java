@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import es.javaschool.train.Entity.Passenger;
 import es.javaschool.train.Service.Impl.PassengerServiceImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
@@ -35,12 +32,12 @@ public class PassengerControl {
     public String consultPassenger(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-            List<String> userRoles = authorities.stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        List<String> userRoles = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
 
-            model.addAttribute("userRoles", userRoles);
+        model.addAttribute("userRoles", userRoles);
         List<Passenger> passengers = this.passengerServiceIMPL.consultPassengers();
         List<Admin> allAdmins = this.adminServiceIMPL.consultAdmins();
         model.addAttribute("passengers",passengers);
@@ -73,7 +70,7 @@ public class PassengerControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
+
         model.addAttribute("userRoles", userRoles);
         List<Admin> admins = this.adminServiceIMPL.consultAdmins();
         model.addAttribute("allAdmins", admins);
@@ -82,13 +79,13 @@ public class PassengerControl {
     }
 
 
-   @PostMapping("/passengers")
-   public String createAndUpdatePassenger(@RequestParam(value ="idAdmin") int idAdmin, Passenger passenger){
+    @PostMapping("/passengers")
+    public String createAndUpdatePassenger(@RequestParam(value ="idAdmin") int idAdmin, Passenger passenger){
         Admin admin = this.adminServiceIMPL.consultAdmin(idAdmin);
         passenger.setIdAdmin(admin);
         this.passengerServiceIMPL.createAndUpdatePassenger(passenger);
         return "redirect:/passengers";
-   }
+    }
 
     @GetMapping("/{id_passenger}")
     public String modifyPassengerForm(@PathVariable("id_passenger") int id, Model model) {
@@ -98,7 +95,7 @@ public class PassengerControl {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Pasa los roles al modelo
+
         model.addAttribute("userRoles", userRoles);
         Passenger passenger = this.passengerServiceIMPL.consultPassenger(id);
         List<Admin> admins = this.adminServiceIMPL.consultAdmins();

@@ -16,9 +16,7 @@ import org.springframework.ui.Model;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class RegisterControl {
     @Autowired
@@ -28,24 +26,18 @@ public class RegisterControl {
     private ScheduleServiceImpl scheduleService;
     @GetMapping("/login")
     public String login(Model model, RedirectAttributes redirectAttributes) {
-        // Obtén la autenticación actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Verifica si el usuario está autenticado
         if (authentication != null && authentication.isAuthenticated()) {
-            // Obtén los roles del usuario autenticado
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             List<String> userRoles = authorities.stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
 
-            // Pasa los roles al modelo
             model.addAttribute("userRoles", userRoles);
         }
 
-        // Pasa el mensaje de registro exitoso al modelo
         if (redirectAttributes.getFlashAttributes().containsKey("registrationSuccess")) {
-            // Pasa el mensaje de registro exitoso al modelo
             model.addAttribute("registrationSuccess", true);
         }
         return "login";
@@ -54,21 +46,16 @@ public class RegisterControl {
 
     @GetMapping("/")
     public String index(Model model) {
-        // Obtén la autenticación actual
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Station> allStations = stationService.consultStations();
         List<Schedule> schedules = scheduleService.consultSchedules();
         model.addAttribute("allStations", allStations);
         model.addAttribute("schedules", schedules);
-        // Verifica si el usuario está autenticado
         if (authentication != null && authentication.isAuthenticated()) {
-            // Obtén los roles del usuario autenticado
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             List<String> userRoles = authorities.stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toList());
-
-            // Pasa los roles al modelo
             model.addAttribute("userRoles", userRoles);
         }
 
