@@ -7,7 +7,8 @@ In which I had to implement a website so that clients can buy train tickets and 
 among other functionalities.
 
 
-##Technical requirements
+## Technical requirements
+
 As a result, it is required to obtain a multi-user client-server application with a network connection.
 All data is stored on the server side. Each client can upload some data, after each change operation the data must be synchronized with the server.
 The client must have a graphical interface.
