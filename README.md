@@ -12,12 +12,19 @@ For company clients:
 1. Searching for a train passing from station A to station B at a given time interval.
 2. Train schedule for the station.
 3. Buying a ticket if:
+   
    3.1 There are free places.
+   
    3.2 The passenger with the same name, surname and date of birth is not yet registered on the selected train.
+   
    3.3 Before the departure of the train at least 10 minutes.
+   
 4. For company employees:
+   
    4.1 adding new stations, trains.
+   
    4.2 viewing all passengers registered for the train.
+   
    4.3 viewing all trains.
 
 
