@@ -6,7 +6,7 @@ Project for Java School of the T-Systems company.
 In which I had to implement a website so that clients can buy train tickets and so that workers can add train stations or see the passengers of each train,
 among other functionalities.
 
-### Funcionalidades
+### Functionalities:
 
 For company clients:
 1. Searching for a train passing from station A to station B at a given time interval.
